@@ -12,12 +12,19 @@ var controller = {
    		// Recoger los parametros de la peticion
    		var params = req.body;
    		// Validar los datos
-   		var validate_name = !validator.isEmpty(params.name);
-   		var validate_surname = !validator.isEmpty(params.surname);
-   		var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
-   		var validate_password = !validator.isEmpty(params.password);
-   		var validate_role = !validator.isEmpty(params.role);
-   		
+   		try{
+   			var validate_name = !validator.isEmpty(params.name);
+	   		var validate_surname = !validator.isEmpty(params.surname);
+	   		var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+	   		var validate_password = !validator.isEmpty(params.password);
+	   		var validate_role = !validator.isEmpty(params.role);
+   		}catch(err)
+   		{
+   			return res.status(200).send({
+	   			message:'Faltan datos por enviar'
+	   		});
+   		}
+   		 		
    		if(validate_name && validate_surname && validate_email && validate_password && validate_role){
    			// Crear objetos de usuario
    			var user = new User();
@@ -32,7 +39,7 @@ var controller = {
 	   		User.findOne({email: user.email }, (err, issetUser) => {
 	   			if(err){
 	   				return res.status(500).send({
-			   			message: "Error al comprobar el usuario"
+			   			message: 'Error al comprobar el usuario'
 			   		});
 	   			}
 	   			if(!issetUser){
@@ -44,12 +51,12 @@ var controller = {
 	   					user.save((err, userStored) => {
 	   						if(err){
 				   				return res.status(500).send({
-						   			message: "Error al guardar el usuario"
+						   			message: 'Error al guardar el usuario'
 						   		});
 	   			            }
 	   			            if(!userStored){
 	   			            	return res.status(500).send({
-						   			message: "El usuario no se ha guardado"
+						   			message: 'El usuario no se ha guardado'
 						   		});
 	   			            }
 
@@ -59,21 +66,21 @@ var controller = {
 	   					});
 				   		// Devolver respuesta
 				   		return res.status(200).send({
-				   			message: "El usuario no esta registrado",
+				   			message: 'El usuario no esta registrado',
 				   			user
 				   		});
 	   				});
 	   			}
 	   			else{
 	   				return res.status(500).send({
-			   			message: "El usuario ya esta registrado"
+			   			message: 'El usuario ya esta registrado'
 			   		});
 	   			}
 	   		});
    		}
    		else{
    			return res.status(200).send({
-	   			message: "Validación de los datos del usuario incorrecta, intentelo de nuevo"
+	   			message: 'Validación de los datos del usuario incorrecta, intentelo de nuevo'
 	   		});
    		}   		
    },
@@ -84,11 +91,18 @@ var controller = {
    	  //Recoger los parametros de la peticion
    	  var params = req.body;
    	  //Validar los datos
-   	  var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
-   	  var validate_password = !validator.isEmpty(params.password);
+   	  try{
+   			var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+   	        var validate_password = !validator.isEmpty(params.password);
+   		}catch(err)
+   		{
+   			return res.status(200).send({
+	   			message:'Faltan datos por enviar'
+	   		});
+   		}
    	  if(!validate_email || !validate_password){
    	  	 return res.status(200).send({
-	   	  	   message: "Los datos son incorrectos, envialos bien"
+	   	  	   message: 'Los datos son incorrectos, envialos bien'
 	   	  });
    	  }
    	  //Buscar usuarios que coincidan con el email y que su estado sea activo(remember_token = true)
@@ -96,13 +110,13 @@ var controller = {
    	  	 // Si se realiza un error
    	  	  if(err){
    	  	  	return res.status(500).send({
-   	  	  		message: "Error al intentar identificarse"
+   	  	  		message: 'Error al intentar identificarse'
    	  	  	});
    	  	  }
    	  	  //Si no lo encuentra
    	  	  if(!user){
    	  	  	 return res.status(500).send({
-   	  	  		message: "El usuario no existe"
+   	  	  		message: 'El usuario no existe'
    	  	  	});
    	  	  }
    	  	  //Si lo encuentra,
@@ -126,14 +140,14 @@ var controller = {
                         user.remember_token = undefined;
                         //Devolver los datos
                         return res.status(200).send({
-                          message: "success",
+                          message: 'success',
                           user
                         });
                     }
                 }
                 else{
                 	return res.status(200).send({
-			          message: "Las credenciales no son correctas"
+			          message: 'Las credenciales no son correctas'
 			    	});
                 }
 			});
@@ -142,9 +156,65 @@ var controller = {
 
    //Api rest actualizar
    update: function(req, res){
-   		return res.status(200).send({
-   			message:"Metodo Actualizar"
-   		})
+   		//Recoger los datos del usuario
+   		var params = req.body;
+   		//Validar los datos
+   		try{
+   			var validate_name = !validator.isEmpty(params.name);
+	   		var validate_surname = !validator.isEmpty(params.surname);
+	   		var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+	   		var validate_role = !validator.isEmpty(params.role);
+   		}catch(err)
+   		{
+   			return res.status(200).send({
+	   			message:'Faltan datos por enviar'
+	   		});
+   		}
+   		//Eliminar propiedades innecesarias
+   		delete params.password;
+   		delete params.created_at;
+
+   		//Guardar en una variable el id del usuario a actualizar
+   		var userId = req.user.sub;
+   		//Actualizar la fecha del campo updated_At
+   		params.updated_at = Date.now();
+
+   		//Comprobar si el email es unico y si el usuario esta activo
+   		if(req.user.email != params.email){
+   			User.findOne({email: params.email.toLowerCase(), remember_token: true }, (err, user) => {
+		   	  	 // Si se realiza un error
+		   	  	  if(err){
+		   	  	  	return res.status(500).send({
+		   	  	  		message: 'Error al intentar identificarse'
+		   	  	  	});
+		   	  	  }
+		   	  	  //Si no lo encuentra
+		   	  	  if(user && user.email == params.email){
+		   	  	  	 return res.status(200).send({
+		   	  	  		message: 'El email no puede ser modificado'
+		   	  	  	});
+		   	  	  }
+	   	  	});
+   		}
+   		//Buscar y actualizar documentos
+   		User.findOneAndUpdate({_id: userId}, params, {new: true}, (err, userUpdated) => {
+   			if(err){
+   				return res.status(200).send({
+   					status: 'error',
+		   			message: 'Error al actualizar los datos del usuario'
+		   		});
+   			}
+   			if(!userUpdated){
+   				return res.status(200).send({
+   					status: 'error',
+		   			message: 'No se ha actualizado los datos del usuario'
+		   		});
+   			}
+   			return res.status(200).send({
+   				status: 'success',
+	   			user: userUpdated
+	   		});
+   		});
    }
 
 };

@@ -143,7 +143,7 @@ var controller = {
    //Api rest actualizar
    update: function(req, res){
    		return res.status(200).send({
-   			message:"Updated"
+   			message:"Metodo Actualizar"
    		})
    }
 

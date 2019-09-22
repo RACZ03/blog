@@ -195,26 +195,27 @@ var controller = {
 		   	  	  	});
 		   	  	  }
 	   	  	});
-   		}
-   		//Buscar y actualizar documentos
-   		User.findOneAndUpdate({_id: userId}, params, {new: true}, (err, userUpdated) => {
-   			if(err){
-   				return res.status(200).send({
-   					status: 'error',
-		   			message: 'Error al actualizar los datos del usuario'
+   		}else{
+	   		//Buscar y actualizar documentos
+	   		User.findOneAndUpdate({_id: userId}, params, {new: true}, (err, userUpdated) => {
+	   			if(err){
+	   				return res.status(200).send({
+	   					status: 'error',
+			   			message: 'Error al actualizar los datos del usuario'
+			   		});
+	   			}
+	   			if(!userUpdated){
+	   				return res.status(200).send({
+	   					status: 'error',
+			   			message: 'No se ha actualizado los datos del usuario'
+			   		});
+	   			}
+	   			return res.status(200).send({
+	   				status: 'success',
+		   			user: userUpdated
 		   		});
-   			}
-   			if(!userUpdated){
-   				return res.status(200).send({
-   					status: 'error',
-		   			message: 'No se ha actualizado los datos del usuario'
-		   		});
-   			}
-   			return res.status(200).send({
-   				status: 'success',
-	   			user: userUpdated
 	   		});
-   		});
+ 		}  
    }
 
 };

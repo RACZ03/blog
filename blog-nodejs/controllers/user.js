@@ -34,7 +34,13 @@ var controller = {
 	   		user.name = params.name;
 	   		user.surname = params.surname;
 	   		user.email = params.email.toLowerCase();
-	   		user.role = 'ROLE_USER';
+	   		//Verificar el rol de usuario
+	   		if(params.role == "ROLE_ADMIN"){
+	   			user.role = params.role;	
+	   		}
+	   		else{
+	   			user.role = 'ROLE_USER';
+	   		}
 	   		user.image = null;
 	   		user.remember_token = true;
 	   		// Comprob ar si el usuario existe
@@ -65,13 +71,8 @@ var controller = {
 	   			            return res.status(200).send({
 	   			            	status: 'success',
 	   			            	user: userStored});
-	   					});
-				   		// Devolver respuesta
-				   		return res.status(200).send({
-				   			message: 'El usuario no esta registrado',
-				   			user
-				   		});
-	   				});
+	   					});//Close save
+	   				});//Close bcrypt
 	   			}
 	   			else{
 	   				return res.status(500).send({

@@ -47,7 +47,7 @@ var controller = {
 					    	service.content = params.content;
 					    	service.image = null;
 					    	service.category_id = params.categoryId;
-					    	service.user = req.user.sub;
+					    	service.user_id = req.user.sub;
 					    	service.remember_token = true;
 					    	//Guardar Service
 					    	service.save((err, serviceStored) => {
@@ -81,7 +81,7 @@ var controller = {
 
     //Api rest actualizar
    update: function(req, res){
-        //Recoger el Id del topic
+        //Recoger el Id del servicio
         var servicioId = req.params.id;
         
         //Recoger los datos que llegan desde post

@@ -68,7 +68,7 @@ var controller = {
 
    //Api rest actualizar
    update: function(req, res){
-        //Recoger el Id del topic
+        //Recoger el Id de la categoria
         var categoryId = req.params.id;
         //Recoger los datos que llegan desde post
         var params = req.body;

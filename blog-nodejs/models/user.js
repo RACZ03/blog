@@ -16,6 +16,14 @@ var UserSchema = Schema({
 	updated_at: { type: Date, default:Date.now },
 });
 
+UserSchema.methods.toJSON = function(){
+	var obj = this.toObject();
+	delete obj.password;
+	delete obj.created_at;
+	delete obj.updated_at;
+	delete obj.remember_token;
+	return obj;
+}
 module.exports = mongoose.model('User', UserSchema);
 			//Lowercase y pluralizar el nombre
 			

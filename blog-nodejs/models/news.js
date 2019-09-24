@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate-v2');
 var Schema = mongoose.Schema;
 
-var PostSchema = Schema({
+var NewsSchema = Schema({
 	user_id: { type: Schema.ObjectId, ref:'User' },
 	title: String,
 	content: String,
@@ -16,7 +16,7 @@ var PostSchema = Schema({
 });
 
 //Carga Paginacion
-    PostSchema.plugin(mongoosePaginate);
-	module.exports = mongoose.model('Post', PostSchema);
+    NewsSchema.plugin(mongoosePaginate);
+	module.exports = mongoose.model('News', NewsSchema);
 	                                //lowercase y pluralizar el nombre
 	                                //users -> documentos(schema)

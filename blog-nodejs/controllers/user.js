@@ -153,7 +153,7 @@ var controller = {
 			          message: 'Las credenciales no son correctas'
 			    	});
                 }
-			});
+			   });
    	  });
    },
 
@@ -259,11 +259,11 @@ var controller = {
 	   	   //Buscar y actualizar el documento de la bd
 	   	   User.findOneAndUpdate({_id: userId, remember_token: true}, {image: file_name,updated_at: Date.now()}, {new: true}, (err, userUpdated) => {
 	   	   		if(err || !userUpdated){
-	   	   			//Devolver una respuesta
-			   	   return res.status(500).send({
-						status: 'error',
-						message: 'Error al guardar el usuario'
-					});
+      	   	   	//Devolver una respuesta
+      			   	return res.status(500).send({
+      						status: 'error',
+      						message: 'Error al guardar el usuario'
+      					});
 	   	   		}
 
 	   	   		//Devolver respuesta

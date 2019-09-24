@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate-v2');
 var Schema = mongoose.Schema;
 
-var s = Schema({
+var ServiceSchema = Schema({
 	user_id: { type: Schema.ObjectId, ref:'User' },
 	category_id: { type: Schema.ObjectId, ref:'Category' },
 	title: String,

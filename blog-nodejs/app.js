@@ -8,6 +8,7 @@
 //Cargar archivos de rutas
 	var user_routes = require('./routes/user');
 	var category_routes = require('./routes/category');
+	var service_routes = require('./routes/service');
 //Middlewares
 	app.use(bodyParser.urlencoded({extended:false}));
 	app.use(bodyParser.json());
@@ -16,5 +17,6 @@
 //reescribir Rutas
 	app.use('/api', user_routes);
 	app.use('/api', category_routes);
+	app.use('/api', service_routes);
 //Exportar modulo
 module.exports = app;

@@ -12,21 +12,70 @@
       </div>
       <div class="navbar-collapse collapse">
         <div class="menu">
-          <ul class="nav nav-tabs" role="tablist">
+          <ul class="nav nav-tabs" role="tablist" *ngIf="!identity">
             <li role="presentation"><a [routerLink] = "['/home']">Inicio</a></li>
             <li role="presentation"><a [routerLink] = "['/servicios']">Servicios</a></li>
             <li role="presentation"><a  [routerLink] = "['/blog']">Blog</a></li>
           
             <li role="presentation"><a  [routerLink] = "['/contacto']">Contacto</a></li>
           </ul>
+
+          <!--Estando logueado-->
+          <ul class="nav nav-tabs" role="tablist" *ngIf="identity">
+              <li role="presentation"><a [routerLink] = "['/home']">Inicio</a></li>
+              <li role="presentation"><a [routerLink] = "['/servicios']">Servicios</a></li>
+              <li role="presentation"><a  [routerLink] = "['/blog']">Blog</a></li>
+            
+              <li role="presentation"><a  [routerLink] = "['/contacto']">Contacto</a></li>
+
+
+            <li class="avatar">
+             <!-- <img src="{{url + 'get-image-file/'+ identity.image}}"/>-->
+          </li>
+           <li class="dropdown">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+               {{identity.name}}<span class="caret"></span>
+               </a>
+               
+               <ul class="dropdown-menu">
+                <li *ngIf="identity && identity.role == 'ROLE_ADMIN'">
+                   <a [routerLink] = "['/admin-panel/listado']" >
+                   <span class="glyphicon glyphicon-tasks"></span>
+                   Administración
+                    </a>
+                </li>
+        
+                <li>
+                  <a [routerLink] = "['/mis-datos']">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    Mis datos
+                  </a>
+                </li>
+        
+                <li>
+                  <a  class="pointer"  (click)="logout()">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    Salir
+                  </a>
+                  </li>
+               </ul>
+        
+           </li>    
+          </ul>
         </div>
       </div>
     </div>
   </nav>
 
+
+-->
+
 <router-outlet></router-outlet>
 
-<div class="inner-footer">
+<footer *ngIf="!identity">
+
+
+<div class="inner-footer" >
     <div class="container">
       <div class="row">
         <div class="col-lg-6 f-about">
@@ -72,8 +121,5 @@
         </ul>
       </div>
     </div>
-
-
-
-
-  </div>
+</div>
+</footer>

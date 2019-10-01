@@ -1,48 +1,50 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,Params } from '@angular/router';
-import{GLOBAL} from'../../../services/global';
-import{User} from '../../../models/user';
-import{ UserService} from'../../../services/user.service';
+import{GLOBAL} from'../../../../services/global';
 
-import{ UploadService} from'../../../services/upload.service';
+import{ CategoryService} from'../../../../services/category.service';
+import{ UserService} from'../../../../services/user.service';
+
+import{ UploadService} from'../../../../services/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import{ fadeLateral} from'../../animations';
+import{ fadeLateral} from'../../../animations';
+import { Category } from 'src/app/models/category';
 
 @Component({
-  selector: 'admin-list',
-  templateUrl: './list.component.html',
-  providers:[UserService],
+  selector: 'admin-list-categories',
+  templateUrl: './list-categories.component.html',
+  providers:[CategoryService, UserService],
   animations: [fadeLateral]
  
 })
-export class ListComponent implements OnInit {
+export class ListCategoriesComponent implements OnInit {
    public title : string;
-   public users: User[];
+   public categories: Category[];
    public token;
-   public busqueda;
+ 
 
   constructor(
     private _route : ActivatedRoute,
     private _router : Router,
+    private _categoryService : CategoryService,
     private _userService : UserService
-
     
 
   ){
-    this.title='Lista de usuarios';
+    this.title='Categorias';
     this.token = this._userService.getToken();
     }
 
     ngOnInit(){
-      this.getUsers();
+      this.getCategories();
     }
     
-    getUsers(){
-      this._userService.getUsers().subscribe(
+    getCategories(){
+      this._categoryService.getCategories().subscribe(
             response =>{
                 if(response.status == 'success')
                 {
-                    this.users = response.users;
+                    this.categories = response.categories;
                 }
             },
             error =>{
@@ -52,13 +54,13 @@ export class ListComponent implements OnInit {
     }
 
 
-  deleteUser(_id){
+  deleteCategory(_id){
      //$('#myModal-'+_id).modal('hide');
-        this._userService.deleteUser(this.token, _id).subscribe(
+        this._categoryService.deleteCategory(this.token, _id).subscribe(
             response =>{
                 if(response.status == 'success')
                 {
-                        this.getUsers();
+                        this.getCategories();
                   
                   
                 }else{

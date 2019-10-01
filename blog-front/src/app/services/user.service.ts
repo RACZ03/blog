@@ -72,16 +72,17 @@ export class UserService{
     }
 
     //actualizar usuario
-   updateUser(user_to_update):Observable<any>{
-    let params = JSON.stringify(user_to_update);
-    let headers = {
-        headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization':  this.getToken()
-        })};
-        return this._http.put(this.url+'update-user/'+user_to_update._id, params,headers);
+   update(user):Observable<any>{
+         //Convertir el objeto de usuario a un json string
+         let params = JSON.stringify(user);
+         //Definir las cabeceras
+         let headers = new HttpHeaders().set('Content-Type','application/json')
+                                        .set('Authorization', this.getToken());
 
- }
+         //Hacer la peticion ajax
+
+         return this._http.put(this.url+'user/update', params, {headers: headers});
+     }
 
  getUsers():Observable<any>{
     

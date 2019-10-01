@@ -10,8 +10,8 @@ var md_upload = multipart({uploadDir: './uploads/services'});
 //Rutas de service
 	router.post('/service/register', md_auth.authenticated , ServiceController.save);
 	router.put('/service/update/:id', md_auth.authenticated , ServiceController.update);
-	router.post('/service/upload-avatar/:servicioId', [md_auth.authenticated, md_upload], ServiceController.uploadAvatar);
-	router.get('/service/avatar/:fileName', md_auth.authenticated, ServiceController.avatar);
+	router.post('/service/upload-avatar', [md_auth.authenticated, md_upload], ServiceController.uploadAvatar);
+	router.get('/service/avatar/:fileName', ServiceController.avatar);
 	router.get('/services', ServiceController.getServices);
 	router.get('/service/:id', ServiceController.getService);
 	router.delete('/service/delete/:id', md_auth.authenticated, ServiceController.deleteService);

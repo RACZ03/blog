@@ -1,0 +1,59 @@
+<br>
+
+    <p *ngIf="status == 'error'">
+        Error al registrar el servicio
+    </p>
+     <div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">
+        El registro del servicio se ha completado correctamente
+     </div>
+    <div class="container" class="col-lg-8">
+        <form #serviceForm="ngForm" (ngSubmit)="onSubmit(serviceForm)">
+            <fieldset>
+                <legend class="h4 text-center">
+                    Servicio
+                </legend>
+                <div class="form-group">
+                     <label for="category_id"> Categoria</label>
+                     <select name="category_id" #category_id="ngModel" [(ngModel)]="service.category_id" class="form-control">
+                        <option *ngFor="let cat of listaCategory" value="{{cat._id}}">
+                            {{cat.name}}
+                        </option>
+                     </select>
+                 </div>
+                <div class="form-group">
+                    <label for="title">Titulo</label>
+                    <input type="text" name="title" class="form-control" #title="ngModel" [(ngModel)]="service.title" required>
+                    <small *ngIf="!title.valid && title.touched" class="invalid-feedback d-block">
+                        El titulo no es valido
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="content">Contenido</label><br>
+                    <textarea rows="5" cols="50" name="content" #content="ngModel"
+                    [(ngModel)]="service.content" required > </textarea>
+
+                     <small *ngIf="!content.valid && content.touched" class="invalid-feedback d-clock">
+                        El titulo no existe
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="image">Imagen</label>
+                    <div *ngIf="service.image">
+                        <img src="{{url + 'service/avatar/' + service.image}}" class="avatar_edit" />
+                    </div>
+                    <angular-file-uploader
+                       [config]="afuConfig"
+                       [resetUpload]=resetVar
+                       (ApiResponse)="imageUpload($event)">
+                    </angular-file-uploader>
+
+                </div>
+
+              
+            <div class="form-group text-center">
+                <input type="submit" value="Registrar"class="btn btn-success" [disabled]="serviceForm.invalid"/>
+                <input type="submit" value="Cancelar" class="btn btn-warning mr-3" [routerLink] ="['../listado-servicios']"/>
+            </div>
+            </fieldset>
+        </form>
+      </div>

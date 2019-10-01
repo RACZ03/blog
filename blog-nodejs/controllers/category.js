@@ -83,51 +83,34 @@ var controller = {
 
         if(validate_name)
         {
-          //Validar que la categoria no exista
-          Category.findOne({name: params.name }, (err, issetCategory) => {
-             if(err){
-                 return res.status(500).send({
-                   message: 'Error al comprobar el servicio'
-                 });
-              }//Si no existe el servicio
-              if(!issetCategory){
-
-                  //Montar in json con los datos modificables
-                  var update = {
-                      name: params.name,
-                      updated_at: Date.now()
-                  }
-                  //Find and Update de la categoria por id y si el estado sea true
-                  Category.findOneAndUpdate({_id: categoryId, remember_token: true}, update, {new:true}, (err , categoryUpdated) => {
-                      //Comprobar si llega un error
-                      if(err)
-                      {
-                          return res.status(500).send({
-                              status:'error',
-                              message:'Error en la peticion'
-                          });
-                      }
-                      if(!categoryUpdated)
-                      {
-                          return res.status(404).send({
-                              status:'error',
-                              message:'No se ha actualizado la categoria'
-                          });
-                      }
-                      //Devolver una respuesta
-                      return res.status(200).send({
-                          status:'success',
-                          category: categoryUpdated
-                      });
+          //Montar in json con los datos modificables
+          var update = {
+              name: params.name,
+              updated_at: Date.now()
+          }
+          //Find and Update de la categoria por id y si el estado sea true
+          Category.findOneAndUpdate({_id: categoryId, remember_token: true}, update, {new:true}, (err , categoryUpdated) => {
+              //Comprobar si llega un error
+              if(err)
+              {
+                  return res.status(500).send({
+                      status:'error',
+                      message:'Error en la peticion'
                   });
               }
-              else{//Fin validacion si existe el servivio que decea actualizar ya existe
-                   return res.status(500).send({
-                       message: 'La cactegoria ya esta registrada'
-                   });
+              if(!categoryUpdated)
+              {
+                  return res.status(404).send({
+                      status:'error',
+                      message:'No se ha actualizado la categoria'
+                  });
               }
-         });
-            
+              //Devolver una respuesta
+              return res.status(200).send({
+                  status:'success',
+                  category: categoryUpdated
+              });
+          });
         }else{
             //Devolver una respuesta
             return res.status(200).send({

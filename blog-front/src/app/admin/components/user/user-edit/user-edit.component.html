@@ -1,12 +1,12 @@
 <br>
     <p *ngIf="status == 'error'">
-        Error al registrar el usuario
+        Error al actualizar los datos del usuario
     </p>
      <div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">
-        El registro se ha completado correctamente
+        Los datos del usuario se actualizaron correctamente
      </div>
     <div class="container" class="col-lg-8">
-        <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+        <form #userEditForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
             <fieldset>
                 <legend class="h4 text-center">
                     Datos Personales
@@ -35,30 +35,28 @@
                     El correo no es valido
                 </small>
             </div>
+           
             <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" name="password"class="form-control" #password="ngModel" [(ngModel)]="
-                user.password" required >
-                
-                <small *ngIf="!password.valid && password.touched" class="invalid-feedback d-block">
-                    La contraseña no es valida
-                </small>
+                <label for="role">Role</label><br>
+                <input class="custom-control-input"  type="radio" name="role" value="ROLE_ADMIN" #role="ngModel" [(ngModel)]="user.role">Rol Admin
+                <input class="custom-control-input" type="radio" name="role" value="ROLE_USER" #role="ngModel" [(ngModel)]=" user.role">Rol User
             </div>
             <div class="form-group">
-                <label for="role">Role</label>
-                <select name="role" #role="ngModel" [(ngModel)]="user.role" class="form-control">
-                    <option value="ROLE_ADMIN">
-                        Admin
-                    </option>
-                    <option value="ROLE_ADMIN">
-                        User
-                    </option>
-                </select>
+                <label for="image">Avatar</label>
+
+                <div *ngIf="identity && identity.image">
+                    <img style="width:120px; height: 100px;" src="{{url + 'user/avatar/' + identity.image}}" class="avatar_edit"/>
+                </div>
+                <br>
+                <angular-file-uploader
+                    [config]="afuConfig"
+                    [resetUpload]=resetVar
+                    (ApiResponse)="avatarUpload($event)">
+                </angular-file-uploader>
             </div>
-            <div class="form-group text-center">
-                <input type="submit" value="Registrarme"class="btn btn-success" [disabled]="
-            registerForm.invalid"/>
-            </div>
+
+            <input type="submit" value="Guardar cambios"class="btn btn-success" [disabled]="
+            userEditForm.invalid"/>
             </fieldset>
         </form>
       </div>

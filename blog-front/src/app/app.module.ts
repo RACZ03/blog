@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import{HttpClientModule} from '@angular/common/http';
 import{CommonModule} from '@angular/common';
 
- 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './shared/home/home.component';
@@ -33,8 +31,6 @@ import { AdminModule } from './admin/admin.module';
     HttpClientModule,
     CommonModule,
     AdminModule,
-
-   
   ],
   providers: [],
   bootstrap: [AppComponent]

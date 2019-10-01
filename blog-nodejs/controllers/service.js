@@ -13,10 +13,10 @@ var controller = {
     	try{
   			var validate_title = !validator.isEmpty(params.title);
   			var validate_content = !validator.isEmpty(params.content);
-  			var validate_categoryId = !validator.isEmpty(params.categoryId);
+  			var validate_categoryId = !validator.isEmpty(params.category_id);
     	}catch(err){
-			return res.status(200).send({
-    		  message:'Faltan datos por enviar, intente nuevamente'
+			    return res.status(200).send({
+    		      message:'Faltan datos por enviar, intente nuevamente'
     	    });
     	}
    	
@@ -33,7 +33,7 @@ var controller = {
 		   		if(!issetService){
 
 			    	//Validar si la categoria existe
-			    	Category.findOne({_id: params.categoryId, remember_token: true }).exec((err, category) => {	    	
+			    	Category.findOne({_id: params.category_id, remember_token: true }).exec((err, category) => {	    	
 				    	if(err || !category){
 			   				return res.status(404).send({
 			   					status: 'error',
@@ -45,8 +45,8 @@ var controller = {
 					    	//Asignar valores 
 					    	service.title = params.title;
 					    	service.content = params.content;
-					    	service.image = null;
-					    	service.category_id = params.categoryId;
+					    	service.image = params.image;
+					    	service.category_id = params.category_id;
 					    	service.user_id = req.user.sub;
 					    	service.remember_token = true;
 					    	//Guardar Service
@@ -88,62 +88,49 @@ var controller = {
         var params = req.body;
         //Validar la informacion
         try{
-            var validate_title = !validator.isEmpty(params.title);
-  			var validate_content = !validator.isEmpty(params.content);
+          var validate_title = !validator.isEmpty(params.title);
+          var validate_content = !validator.isEmpty(params.content);
+          var validate_categoryId = !validator.isEmpty(params.category_id);
         }catch(err){
             return res.status(200).send({
-              message:'Faltan datos por enviar, intente nuevamente'
+                message:'Faltan datos por enviar, intente nuevamente'
             });
         }
 
         if(validate_title && validate_content)
         {
-		
-	    	//Validar que el servicio no exista
-	   		Service.findOne({title: params.title }, (err, issetService) => {
-		   		if(err){
-		   			return res.status(500).send({
-				   		message: 'Error al comprobar el servicio'
-				   	});
-		   		}//Si no existe el servicio
-		   		if(!issetService){
 
-		            //Montar in json con los datos modificables
-		            var update = {
-		                title: params.title,
-		                content: params.content,
-		                updated_at: Date.now()
-		            }
-		            //Find and Update de la categoria por id y si el estado sea true
-		            Service.findOneAndUpdate({_id: servicioId, remember_token: true}, update, {new:true}, (err , serviceUpdated) => {
-		                //Comprobar si llega un error
-		                if(err)
-		                {
-		                    return res.status(500).send({
-		                        status:'error',
-		                        message:'Error en la peticion'
-		                    });
-		                }
-		                if(!serviceUpdated)
-		                {
-		                    return res.status(404).send({
-		                        status:'error',
-		                        message:'No se ha actualizado el servicio'
-		                    });
-		                }
-		                //Devolver una respuesta
-		                return res.status(200).send({
-		                    status:'success',
-		                    service: serviceUpdated
-		                });
-		            });
-		        }
-		        else{//Fin validacion si existe el servivio que decea actualizar ya existe
-		   			return res.status(500).send({
-				   		message: 'El servicio ya esta registrado'
-				   	});
-		   		}
-	   		});
+          //Montar in json con los datos modificables
+          var update = {
+              title: params.title,
+              content: params.content,
+              image: params.image,
+              category_id: params.category_id,
+              updated_at: Date.now()
+          }
+          //Find and Update de la categoria por id y si el estado sea true
+          Service.findOneAndUpdate({_id: servicioId, remember_token: true}, update, {new:true}, (err , serviceUpdated) => {
+              //Comprobar si llega un error
+              if(err)
+              {
+                  return res.status(500).send({
+                      status:'error',
+                      message:'Error en la peticion'
+                  });
+              }
+              if(!serviceUpdated)
+              {
+                  return res.status(404).send({
+                      status:'error',
+                      message:'No se ha actualizado el servicio'
+                  });
+              }
+              //Devolver una respuesta
+              return res.status(200).send({
+                  status:'success',
+                  service: serviceUpdated
+              });
+          });
             
         }else{
             //Devolver una respuesta
@@ -186,24 +173,12 @@ var controller = {
 				});
    	   		});
    	   }else{
-   	   	   //Recoger el Id del topic
-           var servicioId = req.params.servicioId;
-	   	   //Buscar y actualizar el documento de la bd
-	   	   Service.findOneAndUpdate({_id: servicioId, remember_token: true}, {image: file_name,updated_at: Date.now()}, {new: true}, (err, serviceUpdated) => {
-	   	   		if(err || !serviceUpdated){
-      	   	   	//Devolver una respuesta
-      			   	return res.status(500).send({
-      						status: 'error',
-      						message: 'Error al guardar el servicio'
-      					});
-	   	   		}
 
 	   	   		//Devolver respuesta
 	   	   		return res.status(200).send({
 						status: 'success',
-						service: serviceUpdated
-				});
-	   	   });
+						image: file_name
+				      });
    	   }
    },
    //Api get Avatar
@@ -225,7 +200,9 @@ var controller = {
 
    //Listar servicios
    getServices: function(req, res){
-   		Service.find({remember_token: true}).exec((err, services) => {
+   		Service.find({remember_token: true})
+   				.populate('category_id')
+   				.exec((err, services) => {
 
    			if(err || !services){
    				return res.status(404).send({

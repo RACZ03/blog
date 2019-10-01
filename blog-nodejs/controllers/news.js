@@ -13,6 +13,7 @@ var controller = {
     	try{
   			var validate_title = !validator.isEmpty(params.title);
   			var validate_content = !validator.isEmpty(params.content);
+        var validate_image = !validator.isEmpty(params.image);
     	}catch(err){
 			return res.status(200).send({
     		  message:'Faltan datos por enviar, intente nuevamente'
@@ -20,7 +21,7 @@ var controller = {
     	}
    	
 	   	//Validar si los campos vienen true
-	    if(validate_title && validate_content){
+	    if(validate_title && validate_content && validate_image){
 	    	
 	    	//Validar que la noticia no exista
 	   		News.findOne({title: params.title }, (err, issetNews) => {
@@ -36,7 +37,7 @@ var controller = {
 			    	//Asignar valores 
 			    	news.title = params.title;
 			    	news.content = params.content;
-			    	news.image = null;
+			    	news.image = params.image;
 			    	news.user_id = req.user.sub;
 			    	news.remember_token = true;
 			    	//Guardar Service
@@ -77,7 +78,7 @@ var controller = {
         //Validar la informacion
         try{
             var validate_title = !validator.isEmpty(params.title);
-  			var validate_content = !validator.isEmpty(params.content);
+  			    var validate_content = !validator.isEmpty(params.content);
         }catch(err){
             return res.status(200).send({
               message:'Faltan datos por enviar, intente nuevamente'
@@ -87,52 +88,35 @@ var controller = {
         if(validate_title && validate_content)
         {
 		
-	    	//Validar que la noticia no exista
-	   		News.findOne({title: params.title }, (err, issetNews) => {
-		   		if(err){
-		   			return res.status(500).send({
-				   		message: 'Error al comprobar la noticia'
-				   	});
-		   		}//Si no existe el noticia
-		   		if(!issetNews){
-
-		            //Montar in json con los datos modificables
-		            var update = {
-		                title: params.title,
-		                content: params.content,
-		                updated_at: Date.now()
-		            }
-		            //Find and Update de la noticia por id y si el estado sea true
-		            News.findOneAndUpdate({_id: newId, remember_token: true}, update, {new:true}, (err , newsUpdated) => {
-		                //Comprobar si llega un error
-		                if(err)
-		                {
-		                    return res.status(500).send({
-		                        status:'error',
-		                        message:'Error en la peticion'
-		                    });
-		                }
-		                if(!newsUpdated)
-		                {
-		                    return res.status(404).send({
-		                        status:'error',
-		                        message:'No se ha actualizado la noticia'
-		                    });
-		                }
-		                //Devolver una respuesta
-		                return res.status(200).send({
-		                    status:'success',
-		                    news: newsUpdated
-		                });
-		            });
-		        }
-		        else{//Fin validacion si existe el servivio que decea actualizar ya existe
-		   			return res.status(500).send({
-				   		message: 'La noticia ya esta registrado'
-				   	});
-		   		}
-	   		});
-            
+            //Montar in json con los datos modificables
+            var update = {
+                title: params.title,
+                content: params.content,
+                updated_at: Date.now()
+            }
+            //Find and Update de la noticia por id y si el estado sea true
+            News.findOneAndUpdate({_id: newId, remember_token: true}, update, {new:true}, (err , newsUpdated) => {
+                //Comprobar si llega un error
+                if(err)
+                {
+                    return res.status(500).send({
+                        status:'error',
+                        message:'Error en la peticion'
+                    });
+                }
+                if(!newsUpdated)
+                {
+                    return res.status(404).send({
+                        status:'error',
+                        message:'No se ha actualizado la noticia'
+                    });
+                }
+                //Devolver una respuesta
+                return res.status(200).send({
+                    status:'success',
+                    news: newsUpdated
+                });
+            });
         }else{
             //Devolver una respuesta
             return res.status(200).send({
@@ -174,7 +158,7 @@ var controller = {
 				});
    	   		});
    	   }else{
-   	   	   //Recoger el Id del topic
+   	   	   /*Recoger el Id del topic
            var newsId = req.params.newsId;
 	   	   //Buscar y actualizar el documento de la bd
 	   	   News.findOneAndUpdate({_id: newsId, remember_token: true}, {image: file_name,updated_at: Date.now()}, {new: true}, (err, newsUpdated) => {
@@ -185,12 +169,11 @@ var controller = {
       						message: 'Error al guardar la noticia'
       					});
 	   	   		}
-
+          */
 	   	   		//Devolver respuesta
 	   	   		return res.status(200).send({
 						status: 'success',
-						news: newsUpdated
-				});
+						image: file_name
 	   	   });
    	   }
    },
@@ -281,71 +264,62 @@ var controller = {
     },
 
     //Api rest noticias por usuarios
-    getNewsByUser:function(req, res){
-    	//Conseguir el id del usuario
-    	var userId = req.params.user;
-    	//Find con la condicion del usuario
-    	News.find({
-    		user_id: userId,
-    		remember_token: true
-    	})
-    	.populate('user_id', 'name surname image')
-    	.sort([['date', 'descending']])
-    	.exec((err, news) => {
-    		if(err)
-    		{
-                 //Devolver resultado
-		    	return res.status(500).send({
-		    		status:'error',
-		    		message:'Error en la peticion'
-		    	});
-    		}
-    		if(!news)
-    		{
-                 //Devolver resultado
-		    	return res.status(404).send({
-		    		status:'error',
-		    		message:'No hay noticias para mostrar'
-		    	});
-    		}
-    		
-			//Devolver resultado
-	    	return res.status(200).send({
-	    		status:'success',
-	    		news: news
-	    	});
-    		
-    	});
+    getListNews:function(req, res){
+    	News.find({remember_token: true}).exec((err, news) => {
+
+         if(err || !news){
+           return res.status(404).send({
+             status: 'error',
+             message: 'No hay categorias que mostrar'
+           }); 
+         }else{
+           
+           //Devolver respuesta
+           return res.status(200).send({
+             status: 'success',
+             news: news
+           });
+         }
+       });
     	
     },
     //Api rest noticia por id
     getNew: function(req, res){
-    	//Sacar el id del noticia de la url
-    	var newsId = req.params.id;
-    	    	//Find por id del noticia
-    	News.find({
-    		_id: newsId,
-    		remember_token: true
-    		})
-    		 .populate('user_id', 'name surname image')
-    		 .exec((err, news) => {
-    		 	if(err){
-	                return res.status(500).send({
-	                	status:'error',
-			    		message: 'Error en la peticion'
-			    	});
-    		 	}
-    		 	if(!news){
-	                return res.status(404).send({
-	                	status:'error',
-			    		message: 'No existe la noticia'
-			    	});
-    		 	}
-		    	return res.status(200).send({
-		    		status:'success',
-		    		news: news
-		    	});
-    	 });
+      //Conseguir el id del usuario
+      var newsId = req.params.id;
+      //Find con la condicion del usuario
+      News.find({
+        _id: newsId,
+        remember_token: true
+      })
+      .populate('user_id', 'name surname image')
+      .sort([['date', 'descending']])
+      .exec((err, news) => {
+        if(err)
+        {
+                 //Devolver resultado
+          return res.status(500).send({
+            status:'error',
+            message:'Error en la peticion'
+          });
+        }
+        if(!news)
+        {
+                 //Devolver resultado
+          return res.status(404).send({
+            status:'error',
+            message:'No hay noticias para mostrar'
+          });
+        }
+        
+      //Devolver resultado
+        return res.status(200).send({
+          status:'success',
+          news
+        });
+        
+      });
+      
     },
     search: function(req, res){
         //Sacar string a buscar de la url

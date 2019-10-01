@@ -1,25 +1,26 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,Params } from '@angular/router';
-import{GLOBAL} from'../../../services/global';
-import{ UserService} from'../../../services/user.service';
-import{ User} from'../../../models/user';
+import{GLOBAL} from'../../../../services/global';
+import{ CategoryService} from'../../../../services/category.service';
+import{UserService} from'../../../../services/user.service';
+import{ Category} from'../../../../models/category';
 
-import{ UploadService} from'../../../services/upload.service';
+import{ UploadService} from'../../../../services/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import{ fadeLateral} from'../../animations';
+import{ fadeLateral} from'../../../animations';
 
 
 
 @Component({
-  selector: 'admin-add',
-  templateUrl: './add.component.html',
-  providers:[UserService, UploadService],
+  selector: 'admin-add-category',
+  templateUrl: './add-category.component.html',
+  providers:[CategoryService, UploadService],
   animations: [fadeLateral]
  
 })
-export class AddComponent implements OnInit {
+export class AddCategoryComponent implements OnInit {
  public  title : string;
- public user: User;
+ public category: Category;
  public identity;
  public token;
  public url : string;
@@ -29,12 +30,13 @@ export class AddComponent implements OnInit {
   constructor(
     private _route : ActivatedRoute,
     private _router : Router,
-    private _userService : UserService,
-    private _uploadService : UploadService
+    private _categoryService : CategoryService,
+    private _uploadService : UploadService,
+    private _userService : UserService
 
   ){
-    this.title='Crear usuario';
-    this.user = new User(1, '', '', '', '', '', '', true,'','');
+    this.title='Crear categoria';
+    this.category = new Category('', true,'','');
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.url = GLOBAL.url;
@@ -43,11 +45,11 @@ export class AddComponent implements OnInit {
     }
 
   onSubmit(form){
-    this._userService.register(this.user).subscribe(
+    this._categoryService.register(this.token, this.category).subscribe(
     response => {
         if (response.status == "success") {
           this.status = response.status;
-          this._router.navigate(['/admin-panel/listado']);
+          this._router.navigate(['/admin-panel/listado-categorias']);
           form.reset();
         }
         else{

@@ -53,6 +53,7 @@ export class EditNewsComponent implements OnInit {
     this.url = GLOBAL.url;
   }
   ngOnInit(){
+        
         this.getNew();
     }
 
@@ -66,6 +67,7 @@ export class EditNewsComponent implements OnInit {
                if(response.status == 'success'){
 
                  this.news = response.news;
+                 console.log(response.news);
                }else{
                  this._router.navigate(['/admin-panel/listado-noticias']);
                }

@@ -16,7 +16,7 @@ var md_upload = multipart({uploadDir: './uploads/news'});
 
 	router.get('/news/list/:page?',NewsController.getNews);
 	router.get('/news',NewsController.getListNews);
-	router.get('/news/:id',NewsController.getNew);
+	router.get('/news/:_id',NewsController.getNew);
 	router.get('/news/search/:search',NewsController.search);
 
 //exportar rutas

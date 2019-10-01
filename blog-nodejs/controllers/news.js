@@ -92,6 +92,7 @@ var controller = {
             var update = {
                 title: params.title,
                 content: params.content,
+                image: params.image,
                 updated_at: Date.now()
             }
             //Find and Update de la noticia por id y si el estado sea true
@@ -285,40 +286,25 @@ var controller = {
     },
     //Api rest noticia por id
     getNew: function(req, res){
-      //Conseguir el id del usuario
-      var newsId = req.params.id;
-      //Find con la condicion del usuario
-      News.find({
-        _id: newsId,
-        remember_token: true
-      })
-      .populate('user_id', 'name surname image')
-      .sort([['date', 'descending']])
-      .exec((err, news) => {
-        if(err)
-        {
-                 //Devolver resultado
-          return res.status(500).send({
-            status:'error',
-            message:'Error en la peticion'
-          });
-        }
-        if(!news)
-        {
-                 //Devolver resultado
-          return res.status(404).send({
-            status:'error',
-            message:'No hay noticias para mostrar'
-          });
-        }
-        
-      //Devolver resultado
-        return res.status(200).send({
-          status:'success',
-          news
-        });
-        
-      });
+     //Recoger el id del usuario
+       var newsId = req.params._id;
+
+       News.findOne({_id: newsId, remember_token: true }).exec((err, news) => {
+
+         if(err || !news){
+           return res.status(404).send({
+             status: 'error',
+             message: 'No existe la noticia'
+           }); 
+         }else{
+
+           //Devolver respuesta
+           return res.status(200).send({
+             status: 'success',
+             news: news
+           });
+         }
+       });
       
     },
     search: function(req, res){

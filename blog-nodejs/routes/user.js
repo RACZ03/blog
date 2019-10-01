@@ -8,7 +8,7 @@ var md_auth = require('../middlewares/authenticated');
 var multipart = require('connect-multiparty');
 var md_upload = multipart({uploadDir: './uploads/users'});
 //Rutas de usuario
-	router.post('/user/register', md_auth.authenticated , UserController.save);
+	router.post('/user/register', UserController.save);
 	router.post('/login', UserController.login);
 	router.put('/user/update', md_auth.authenticated , UserController.update);
 	router.post('/user/upload-avatar', [md_auth.authenticated, md_upload],UserController.uploadAvatar);

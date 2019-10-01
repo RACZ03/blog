@@ -28,6 +28,7 @@ export class EditServiceComponent implements OnInit {
  public url : string;
  public status: string;
  public error:string;
+ public is_Edit: boolean;
 
    public afuConfig ={
      multiple: false,
@@ -60,7 +61,7 @@ export class EditServiceComponent implements OnInit {
     this.url = GLOBAL.url;
   }
   ngOnInit(){
-        
+        this.is_Edit = true;
         this.getCategories();
         this.getService();
     }

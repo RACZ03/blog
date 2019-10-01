@@ -32,7 +32,7 @@ export class AddNewsComponent implements OnInit {
      formatsAllowed: ".jpg, .png, .gif, .jpeg",
      maxSize: "50",
      uploadAPI : {
-       url: GLOBAL.url+'service/upload-avatar',
+       url: GLOBAL.url+'news/upload-avatar',
        headers: {
            "Authorization" : this._userService.getToken()
        }
@@ -46,19 +46,19 @@ export class AddNewsComponent implements OnInit {
   constructor(
     private _route : ActivatedRoute,
     private _router : Router,
-    private _newsService : NewsService,
+    private _newService : NewsService,
     private _userService: UserService,
     private _uploadService : UploadService
 
   ){
     this.title='Crear noticia';
-    this.new = new News(1,this.identity._id,'','','',true,'','');
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.url = GLOBAL.url;
   }
   ngOnInit(){
- 
+        
+        this.new = new News(1,this.identity._id,'','','',true,'','');
     }
   imageUpload(data){
       let image_data = JSON.parse(data.response);
@@ -67,12 +67,12 @@ export class AddNewsComponent implements OnInit {
   }
 
   onSubmit(form){
-    this._newsService.register(this.token, this.new).subscribe(
+    this._newService.register(this.token, this.new).subscribe(
     response => {
       console.log(response);
         if (response.status == "success") {
           this.status = response.status;
-          this._router.navigate(['/admin-panel/listado-noticias']);
+          this._router.navigate(['/admin-panel/listado-noticia']);
           form.reset();
         }
         else{

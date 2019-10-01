@@ -70,6 +70,7 @@ export class AddServiceComponent implements OnInit {
                 if(response.status == 'success')
                 {
                     this.categories = response.categories;
+                    console.log(this.categories);
                 }
             },
             error =>{

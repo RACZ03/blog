@@ -26,6 +26,7 @@ export class EditNewsComponent implements OnInit {
  public url : string;
  public status: string;
  public error:string;
+ public is_Edit: boolean;
 
    public afuConfig ={
      multiple: false,
@@ -57,10 +58,10 @@ export class EditNewsComponent implements OnInit {
     this.url = GLOBAL.url;
   }
   ngOnInit(){
-        
-        this.getNew();
+        this.is_Edit = true;
+        this.getService();
     }
-    getNew(){
+    getService(){
     //sacar id de la noticia por la url
     this._route.params.subscribe(params => {
       var id = params['_id'];
@@ -69,9 +70,10 @@ export class EditNewsComponent implements OnInit {
            response =>{
                if(response.status == 'success'){
 
-                 this.new = response.new;
+                 this.new = response.news;
+                 console.log(this.new);
                }else{
-                 this._router.navigate(['/admin-panel/listado-noticia']);
+                 this._router.navigate(['/admin-panel/listado-noticias']);
                }
            },
            error =>{
@@ -93,7 +95,7 @@ export class EditNewsComponent implements OnInit {
       console.log(response);
         if (response.status == "success") {
           this.status = response.status;
-          this._router.navigate(['/admin-panel/listado-noticia']);
+          this._router.navigate(['/admin-panel/listado-noticias']);
           form.reset();
         }
         else{
@@ -108,3 +110,4 @@ export class EditNewsComponent implements OnInit {
   }
 
 }
+

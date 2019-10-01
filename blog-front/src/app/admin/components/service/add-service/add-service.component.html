@@ -1,4 +1,7 @@
+<div *ngIf="service" >
+  
 <br>
+      
 
     <p *ngIf="status == 'error'">
         Error al registrar el servicio
@@ -12,6 +15,9 @@
                 <legend class="h4 text-center">
                     Servicio
                 </legend>
+                <p *ngIf="is_Edit">
+                     Editar servicio
+                </p>
                 <div class="form-group">
                      <label for="category_id"> Categoria</label>
                      <select name="category_id" #category_id="ngModel" [(ngModel)]="service.category_id" class="form-control">
@@ -57,3 +63,5 @@
             </fieldset>
         </form>
       </div>
+
+</div>

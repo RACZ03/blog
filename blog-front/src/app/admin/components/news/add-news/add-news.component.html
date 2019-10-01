@@ -1,4 +1,7 @@
+<div *ngIf="new" >
+  
 <br>
+      
 
     <p *ngIf="status == 'error'">
         Error al registrar la noticia
@@ -12,6 +15,9 @@
                 <legend class="h4 text-center">
                     Noticia
                 </legend>
+                <p *ngIf="is_Edit">
+                     Editar Noticia
+                </p>
                 <div class="form-group">
                     <label for="title">Titulo</label>
                     <input type="text" name="title" class="form-control" #title="ngModel" [(ngModel)]="new.title" required>
@@ -31,7 +37,7 @@
                 <div class="form-group">
                     <label for="image">Imagen</label>
                     <div *ngIf="new.image">
-                        <img src="{{url + 'news/avatar/' +  new.image}}" class="avatar_edit" />
+                        <img src="{{url + 'news/avatar/' + new.image}}" class="avatar_edit" />
                     </div>
                     <angular-file-uploader
                        [config]="afuConfig"
@@ -40,11 +46,14 @@
                     </angular-file-uploader>
 
                 </div>
+
               
             <div class="form-group text-center">
                 <input type="submit" value="Registrar"class="btn btn-success" [disabled]="newForm.invalid"/>
-                <input type="submit" value="Cancelar" class="btn btn-warning mr-3" [routerLink] ="['../listado-noticia']"/>
+                <input type="submit" value="Cancelar" class="btn btn-warning mr-3" [routerLink] ="['../listado-noticias']"/>
             </div>
             </fieldset>
         </form>
       </div>
+
+</div>

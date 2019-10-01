@@ -24,12 +24,12 @@ import { EditServiceComponent } from './components/service/edit-service/edit-ser
 
 //Componente de noticias
 import { ListNewsComponent } from './components/news/list-news/list-news.component';
-import {AddNewsComponent} from './components/news/add-news/add-news.component';
-import {EditNewsComponent} from './components/news/edit-news/edit-news.component';
 
 //servicios
 import { AdminGuard } from '../services/admin.guard';
 import { UserService } from '../services/user.service';
+import { AddNewsComponent } from './components/news/add-news/add-news.component';
+import { EditNewsComponent } from './components/news/edit-news/edit-news.component';
 
 
 @NgModule({
@@ -42,11 +42,11 @@ import { UserService } from '../services/user.service';
         AddCategoryComponent,
         EditCategoryComponent,
         ListNewsComponent,
-        AddNewsComponent,
-        EditNewsComponent,
         ListServiceComponent,
         AddServiceComponent,
-        EditServiceComponent
+        EditServiceComponent,
+        AddNewsComponent,
+        EditNewsComponent,
     ],
     imports:[
         CommonModule,

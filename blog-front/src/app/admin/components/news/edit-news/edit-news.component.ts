@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,Params } from '@angular/router';
 import{GLOBAL} from'../../../../services/global';
 import{ NewsService} from'../../../../services/news.service';
@@ -9,31 +9,26 @@ import{ UploadService} from'../../../../services/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import{ fadeLateral} from'../../../animations';
 
-
-
 @Component({
-  selector: 'admin-edit-news',
+  selector: 'app-edit-news',
   templateUrl: '../add-news/add-news.component.html',
   providers:[NewsService,UserService, UploadService],
-  animations: [fadeLateral]
- 
 })
 export class EditNewsComponent implements OnInit {
  public  title : string;
- public new: News;
+ public news: News;
  public identity;
  public token;
  public url : string;
  public status: string;
  public error:string;
- public is_Edit: boolean;
 
    public afuConfig ={
      multiple: false,
      formatsAllowed: ".jpg, .png, .gif, .jpeg",
      maxSize: "50",
      uploadAPI : {
-       url: GLOBAL.url+'service/upload-avatar',
+       url: GLOBAL.url+'news/upload-avatar',
        headers: {
            "Authorization" : this._userService.getToken()
        }
@@ -58,10 +53,10 @@ export class EditNewsComponent implements OnInit {
     this.url = GLOBAL.url;
   }
   ngOnInit(){
-        this.is_Edit = true;
-        this.getService();
+        this.getNew();
     }
-    getService(){
+
+  getNew(){
     //sacar id de la noticia por la url
     this._route.params.subscribe(params => {
       var id = params['_id'];
@@ -70,8 +65,7 @@ export class EditNewsComponent implements OnInit {
            response =>{
                if(response.status == 'success'){
 
-                 this.new = response.news;
-                 console.log(this.new);
+                 this.news = response.news;
                }else{
                  this._router.navigate(['/admin-panel/listado-noticias']);
                }
@@ -82,17 +76,16 @@ export class EditNewsComponent implements OnInit {
         );
     });
   }
-   
   imageUpload(data){
       let image_data = JSON.parse(data.response);
-      this.new.image = image_data.image;
+      this.news.image = image_data.image;
     
   }
 
   onSubmit(form){
-    this._newsService.updateNews(this.token, this.new).subscribe(
+    this._newsService.updateNews(this.token, this.news).subscribe(
     response => {
-      console.log(response);
+    	console.log(response);
         if (response.status == "success") {
           this.status = response.status;
           this._router.navigate(['/admin-panel/listado-noticias']);
@@ -110,4 +103,3 @@ export class EditNewsComponent implements OnInit {
   }
 
 }
-

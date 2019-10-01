@@ -1,4 +1,4 @@
-<div *ngIf="new" >
+<div *ngIf="news" >
   
 <br>
       
@@ -10,17 +10,17 @@
         El registro de la noticia se ha completado correctamente
      </div>
     <div class="container" class="col-lg-8">
-        <form #newForm="ngForm" (ngSubmit)="onSubmit(newForm)">
+        <form #newsForm="ngForm" (ngSubmit)="onSubmit(newsForm)">
             <fieldset>
                 <legend class="h4 text-center">
                     Noticia
                 </legend>
                 <p *ngIf="is_Edit">
-                     Editar Noticia
+                     Editar noticia
                 </p>
                 <div class="form-group">
                     <label for="title">Titulo</label>
-                    <input type="text" name="title" class="form-control" #title="ngModel" [(ngModel)]="new.title" required>
+                    <input type="text" name="title" class="form-control" #title="ngModel" [(ngModel)]="news.title" required>
                     <small *ngIf="!title.valid && title.touched" class="invalid-feedback d-block">
                         El titulo no es valido
                     </small>
@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label for="content">Contenido</label><br>
                     <textarea rows="5" cols="50" name="content" #content="ngModel"
-                    [(ngModel)]="new.content" required > </textarea>
+                    [(ngModel)]="news.content" required > </textarea>
 
                      <small *ngIf="!content.valid && content.touched" class="invalid-feedback d-clock">
                         El titulo no existe
@@ -36,8 +36,8 @@
                 </div>
                 <div class="form-group">
                     <label for="image">Imagen</label>
-                    <div *ngIf="new.image">
-                        <img src="{{url + 'news/avatar/' + new.image}}" class="avatar_edit" />
+                    <div *ngIf="news.image">
+                        <img src="{{url + 'news/avatar/' + news.image}}" class="avatar_edit" />
                     </div>
                     <angular-file-uploader
                        [config]="afuConfig"
@@ -49,7 +49,7 @@
 
               
             <div class="form-group text-center">
-                <input type="submit" value="Registrar"class="btn btn-success" [disabled]="newForm.invalid"/>
+                <input type="submit" value="Registrar"class="btn btn-success" [disabled]="newsForm.invalid"/>
                 <input type="submit" value="Cancelar" class="btn btn-warning mr-3" [routerLink] ="['../listado-noticias']"/>
             </div>
             </fieldset>

@@ -22,7 +22,7 @@ import{ fadeLateral} from'../../../animations';
 export class AddServiceComponent implements OnInit {
  public  title : string;
  public service: Service;
- public categories;
+ public listaCategory;
  public identity;
  public token;
  public url : string;
@@ -69,8 +69,7 @@ export class AddServiceComponent implements OnInit {
             response =>{
                 if(response.status == 'success')
                 {
-                    this.categories = response.categories;
-                    console.log(this.categories);
+                    this.listaCategory = response.categories;
                 }
             },
             error =>{

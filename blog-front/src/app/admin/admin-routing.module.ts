@@ -15,9 +15,8 @@ import { AddServiceComponent } from './components/service/add-service/add-servic
 import{ EditServiceComponent } from './components/service/edit-service/edit-service.component';
 
 import {ListNewsComponent} from './components/news/list-news/list-news.component';
-import {AddNewsComponent} from './components/news/add-news/add-news.component';
-import {EditNewsComponent} from './components/news/edit-news/edit-news.component';
-
+import { AddNewsComponent } from './components/news/add-news/add-news.component';
+import { EditNewsComponent } from './components/news/edit-news/edit-news.component';
 import { AdminGuard } from '../services/admin.guard';
 
 //Congiguración de rutas
@@ -33,9 +32,9 @@ const adminRoutes: Routes = [
       { path: 'listado-categorias', component: ListCategoriesComponent },
       { path: 'crear-categoria', component: AddCategoryComponent },
       { path: 'edit-categoria/:_id', component: EditCategoryComponent },
-      { path: 'listado-noticia', component: ListNewsComponent },
+      { path: 'listado-noticias', component: ListNewsComponent },
       { path: 'crear-noticia', component: AddNewsComponent },
-      { path: 'edit-noticia/:_id', component: EditNewsComponent },
+      { path: 'edit-news/:_id', component: EditNewsComponent},
       { path: 'listado-servicios', component: ListServiceComponent },
       { path: 'crear-service', component: AddServiceComponent },
       { path: 'edit-service/:_id', component: EditServiceComponent },

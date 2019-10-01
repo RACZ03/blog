@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,Params } from '@angular/router';
 import{GLOBAL} from'../../../../services/global';
 import{ NewsService} from'../../../../services/news.service';
@@ -9,18 +9,14 @@ import{ UploadService} from'../../../../services/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import{ fadeLateral} from'../../../animations';
 
-
-
 @Component({
-  selector: 'admin-add-news',
+  selector: 'app-add-news',
   templateUrl: './add-news.component.html',
   providers:[NewsService,UserService, UploadService],
-  animations: [fadeLateral]
- 
 })
 export class AddNewsComponent implements OnInit {
  public  title : string;
- public new: News;
+ public news: News;
  public identity;
  public token;
  public url : string;
@@ -46,7 +42,7 @@ export class AddNewsComponent implements OnInit {
   constructor(
     private _route : ActivatedRoute,
     private _router : Router,
-    private _newService : NewsService,
+    private _newsService : NewsService,
     private _userService: UserService,
     private _uploadService : UploadService
 
@@ -58,21 +54,21 @@ export class AddNewsComponent implements OnInit {
   }
   ngOnInit(){
         
-        this.new = new News(1,this.identity._id,'','','',true,'','');
+        this.news = new News(1,this.identity._id,'','','',true,'','');
     }
   imageUpload(data){
       let image_data = JSON.parse(data.response);
-      this.new.image = image_data.image;
+      this.news.image = image_data.image;
     
   }
 
   onSubmit(form){
-    this._newService.register(this.token, this.new).subscribe(
+    this._newsService.register(this.token, this.news).subscribe(
     response => {
-      console.log(response);
+    	console.log(response);
         if (response.status == "success") {
           this.status = response.status;
-          this._router.navigate(['/admin-panel/listado-noticia']);
+          this._router.navigate(['/admin-panel/listado-noticias']);
           form.reset();
         }
         else{
@@ -85,5 +81,4 @@ export class AddNewsComponent implements OnInit {
      });
   
   }
-
 }

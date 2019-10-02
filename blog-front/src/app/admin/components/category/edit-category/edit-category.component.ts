@@ -64,7 +64,7 @@ export class EditCategoryComponent implements OnInit {
     });
   }
   onSubmit(form){
-    this._categoryService.updateCategory(this.token,this.category).subscribe(
+    this._categoryService.updateCategory(this.token, this.category).subscribe(
     response => {
         if (response.status == "success") {
           this.status = response.status;

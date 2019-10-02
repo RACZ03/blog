@@ -21,7 +21,7 @@ export class ListCategoriesComponent implements OnInit {
    public title : string;
    public categories: Category[];
    public token;
- 
+   public identity;
 
   constructor(
     private _route : ActivatedRoute,
@@ -33,6 +33,7 @@ export class ListCategoriesComponent implements OnInit {
   ){
     this.title='Categorias';
     this.token = this._userService.getToken();
+    this.identity = this._userService.getIdentity();
     }
 
     ngOnInit(){
@@ -56,7 +57,7 @@ export class ListCategoriesComponent implements OnInit {
 
   deleteCategory(_id){
      //$('#myModal-'+_id).modal('hide');
-        this._categoryService.deleteCategory(this.token, _id).subscribe(
+        this._categoryService.deleteCategory(this.token,this.identity._id, _id).subscribe(
             response =>{
                 if(response.status == 'success')
                 {

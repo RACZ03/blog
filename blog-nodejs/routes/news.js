@@ -12,7 +12,7 @@ var md_upload = multipart({uploadDir: './uploads/news'});
 	router.put('/news/update/:id', md_auth.authenticated , NewsController.update);
 	router.post('/news/upload-avatar', [md_auth.authenticated, md_upload], NewsController.uploadAvatar);
 	router.get('/news/avatar/:fileName', NewsController.avatar);
-	router.delete('/news/delete/:id', md_auth.authenticated, NewsController.deleteNews);
+	router.delete('/news/delete/:idAdmin/:id', md_auth.authenticated, NewsController.deleteNews);
 
 	router.get('/news/list/:page?',NewsController.getNews);
 	router.get('/news',NewsController.getListNews);

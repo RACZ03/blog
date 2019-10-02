@@ -63,12 +63,12 @@ getCategory(id):Observable<any>{
     return this._http.get(this.url+'category/'+id,headers);
 }
 
-deleteCategory(token, id):Observable<any>{
+deleteCategory(token, idAdmin, idcategory):Observable<any>{
     let headers = {headers :  new HttpHeaders({
         'Content-Type': 'application/json',
          'Authorization': token
     })};
-  return this._http.delete(this.url+'category/delete/'+id, headers);
+  return this._http.delete(this.url+'category/delete'+idAdmin+'/'+idcategory, headers);
 }
 
 }

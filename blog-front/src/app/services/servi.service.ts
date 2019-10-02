@@ -59,12 +59,12 @@ export class ServiService{
             })};
         return this._http.get(this.url+'service/'+id, headers);
     }
-    deleteService(token, id):Observable<any>{
+    deleteService(token, idAdmin, id):Observable<any>{
         let headers = {headers :  new HttpHeaders({
             'Content-Type': 'application/json',
              'Authorization': token
         })};
-      return this._http.delete(this.url+'service/delete/'+id, headers);
+      return this._http.delete(this.url+'service/delete/'+idAdmin+'/'+id, headers);
     }
 
 }

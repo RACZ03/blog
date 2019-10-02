@@ -4,84 +4,85 @@ var fs = require('fs');
 var path = require('path');
 var Service = require('../models/service');
 var Category = require('../models/category');
+var User = require('../models/user');
 
 var controller = {
     save: function(req, res){
-    	//Recoger los parametros por post
-    	var params = req.body;
-    	//Validar datos
-    	try{
-  			var validate_title = !validator.isEmpty(params.title);
-  			var validate_content = !validator.isEmpty(params.content);
-  			var validate_categoryId = !validator.isEmpty(params.category_id);
-    	}catch(err){
-			    return res.status(200).send({
-    		      message:'Faltan datos por enviar, intente nuevamente'
-    	    });
-    	}
-   	
-	   	//Validar si los campos vienen true
-	    if(validate_title && validate_content && validate_categoryId){
-	    	
-	    	//Validar que el servicio no exista
-	   		Service.findOne({title: params.title }, (err, issetService) => {
-		   		if(err){
-		   			return res.status(500).send({
-				   		message: 'Error al comprobar el servicio'
-				   	});
-		   		}//Si no existe el servicio
-		   		if(!issetService){
+      	//Recoger los parametros por post
+      	var params = req.body;
+      	//Validar datos
+      	try{
+    			var validate_title = !validator.isEmpty(params.title);
+    			var validate_content = !validator.isEmpty(params.content);
+    			var validate_categoryId = !validator.isEmpty(params.category_id);
+      	}catch(err){
+  			    return res.status(200).send({
+      		      message:'Faltan datos por enviar, intente nuevamente'
+      	    });
+      	}
+     	
+  	   	//Validar si los campos vienen true
+  	    if(validate_title && validate_content && validate_categoryId){
+  	    	
+  	    	//Validar que el servicio no exista
+  	   		Service.findOne({title: params.title }, (err, issetService) => {
+  		   		if(err){
+  		   			return res.status(500).send({
+  				   		message: 'Error al comprobar el servicio'
+  				   	});
+  		   		}//Si no existe el servicio
+  		   		if(!issetService){
 
-			    	//Validar si la categoria existe
-			    	Category.findOne({_id: params.category_id, remember_token: true }).exec((err, category) => {	    	
-				    	if(err || !category){
-			   				return res.status(404).send({
-			   					status: 'error',
-			   					message: 'No existe el categoria'
-			   				}); 
-			   			}else{
-					    	//Crear objetos a guardar
-					    	var service = new Service();
-					    	//Asignar valores 
-					    	service.title = params.title;
-					    	service.content = params.content;
-					    	service.image = params.image;
-					    	service.category_id = params.category_id;
-					    	service.user_id = req.user.sub;
-					    	service.remember_token = true;
-					    	//Guardar Service
-					    	service.save((err, serviceStored) => {
-					    		if(err || !serviceStored){
-					    			return res.status(404).send({
-							    		status:'error',
-							    		message:'El servicio no se ha guardado'
-						    	    });
-					    		}
-					    		//Devolver una respuesta
-						    	return res.status(200).send({
-						    		status:'success',
-						    		service: serviceStored
-						    	});
-					    	});//Fin del Save
-				    	}
-			       });//Fin de la validacion si existe la categoria
-			    }
-		   		else{//Fin validacion si existe el servivio que se quiere guardar
-		   			return res.status(500).send({
-				   		message: 'El servicio ya esta registrado'
-				   	});
-		   		}
-	   		});
-    	}else{
-    		return res.status(200).send({
-    			message:'Los datos no son validos'
-    		});
-    	}
+  			    	//Validar si la categoria existe
+  			    	Category.findOne({_id: params.category_id, remember_token: true }).exec((err, category) => {	    	
+  				    	if(err || !category){
+  			   				return res.status(404).send({
+  			   					status: 'error',
+  			   					message: 'No existe el categoria'
+  			   				}); 
+  			   			}else{
+  					    	//Crear objetos a guardar
+  					    	var service = new Service();
+  					    	//Asignar valores 
+  					    	service.title = params.title;
+  					    	service.content = params.content;
+  					    	service.image = params.image;
+  					    	service.category_id = params.category_id;
+  					    	service.user_id = req.user.sub;
+  					    	service.remember_token = true;
+  					    	//Guardar Service
+  					    	service.save((err, serviceStored) => {
+  					    		if(err || !serviceStored){
+  					    			return res.status(404).send({
+  							    		status:'error',
+  							    		message:'El servicio no se ha guardado'
+  						    	    });
+  					    		}
+  					    		//Devolver una respuesta
+  						    	return res.status(200).send({
+  						    		status:'success',
+  						    		service: serviceStored
+  						    	});
+  					    	});//Fin del Save
+  				    	}
+  			       });//Fin de la validacion si existe la categoria
+  			    }
+  		   		else{//Fin validacion si existe el servivio que se quiere guardar
+  		   			return res.status(500).send({
+  				   		message: 'El servicio ya esta registrado'
+  				   	});
+  		   		}
+  	   		});
+      	}else{
+      		return res.status(200).send({
+      			message:'Los datos no son validos'
+      		});
+      	}
     },
 
     //Api rest actualizar
    update: function(req, res){
-        //Recoger el Id del servicio
+         //Recoger el Id del servicio
         var servicioId = req.params.id;
         
         //Recoger los datos que llegan desde post
@@ -245,28 +246,42 @@ var controller = {
 
    //Api rest Dar de baja a un usuario
    deleteService: function(req, res){
-
-   	   //Recoger el id del usuario
-   		var serviceId = req.params.id;
-   	   //Buscar y actualizar el remember_token a false
-	   		Service.findOneAndUpdate({_id: serviceId, remember_token: true}, {remember_token: false, updated_at: Date.now()}, {new: true}, (err, serviceUpdated) => {
-	   			if(err){
-	   				return res.status(200).send({
-	   					status: 'error',
-			   			message: 'Error al eliminar el registro del servicio'
-			   		});
-	   			}
-	   			if(!serviceUpdated){
-	   				return res.status(200).send({
-	   					status: 'error',
-			   			message: 'No existe el registro'
-			   		});
-	   			}
-	   			return res.status(200).send({
-	   				status: 'success',
-		   			message: 'Registro eliminado correctamente'
-		   		});
-	   		});
+      //Id del usuario Administrador
+     var IdAdmin = req.params.idAdmin;
+         console.log(IdAdmin);
+         //Validar Que el usuario sea administrador
+         User.findOne({_id:IdAdmin, role: "ROLE_ADMIN", remember_token: true}).exec((err, user) => {
+               if(err || !user){
+                     //Devolver una respuesta
+                     return res.status(500).send({
+                        status: 'error',
+                        message: 'Acceso denegado'
+                  });
+               }
+               else{
+               	   //Recoger el id del usuario
+               		var serviceId = req.params.id;
+               	   //Buscar y actualizar el remember_token a false
+            	   		Service.findOneAndUpdate({_id: serviceId, remember_token: true}, {remember_token: false, updated_at: Date.now()}, {new: true}, (err, serviceUpdated) => {
+            	   			if(err){
+            	   				return res.status(200).send({
+            	   					status: 'error',
+            			   			message: 'Error al eliminar el registro del servicio'
+            			   		});
+            	   			}
+            	   			if(!serviceUpdated){
+            	   				return res.status(200).send({
+            	   					status: 'error',
+            			   			message: 'No existe el registro'
+            			   		});
+            	   			}
+            	   			return res.status(200).send({
+            	   				status: 'success',
+            		   			message: 'Registro eliminado correctamente'
+            		   		});
+            	   		});
+                }
+         });
    }
 };
 

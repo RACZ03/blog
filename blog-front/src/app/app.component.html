@@ -38,7 +38,7 @@
                </a>
                
                <ul class="dropdown-menu">
-                <li *ngIf="identity && identity.role == 'ROLE_ADMIN'">
+                <li *ngIf="identity">
                    <a [routerLink] = "['/admin-panel/listado']" >
                    <span class="glyphicon glyphicon-tasks"></span>
                    Administración

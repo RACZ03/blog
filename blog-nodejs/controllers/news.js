@@ -1,71 +1,72 @@
 'use strict'
 var validator = require('validator');
 var News = require('../models/news');
+var User = require('../models/user');
 var fs = require('fs');
 var path = require('path');
 
 var controller = {
 	//Api rest Guardar noticia
 	 save: function(req, res){
-    	//Recoger los parametros por post
-    	var params = req.body;
-    	//Validar datos
-    	try{
-  			var validate_title = !validator.isEmpty(params.title);
-  			var validate_content = !validator.isEmpty(params.content);
-        var validate_image = !validator.isEmpty(params.image);
-    	}catch(err){
-			return res.status(200).send({
-    		  message:'Faltan datos por enviar, intente nuevamente'
-    	    });
-    	}
-   	
-	   	//Validar si los campos vienen true
-	    if(validate_title && validate_content && validate_image){
-	    	
-	    	//Validar que la noticia no exista
-	   		News.findOne({title: params.title }, (err, issetNews) => {
-		   		if(err){
-		   			return res.status(500).send({
-				   		message: 'Error al comprobar la noticia'
-				   	});
-		   		}//Si no existe el servicio
-		   		if(!issetNews){
+      //Recoger los parametros por post
+      	var params = req.body;
+      	//Validar datos
+      	try{
+    			var validate_title = !validator.isEmpty(params.title);
+    			var validate_content = !validator.isEmpty(params.content);
+          var validate_image = !validator.isEmpty(params.image);
+      	}catch(err){
+  			return res.status(200).send({
+      		  message:'Faltan datos por enviar, intente nuevamente'
+      	    });
+      	}
+     	
+  	   	//Validar si los campos vienen true
+  	    if(validate_title && validate_content && validate_image){
+  	    	
+  	    	//Validar que la noticia no exista
+  	   		News.findOne({title: params.title }, (err, issetNews) => {
+  		   		if(err){
+  		   			return res.status(500).send({
+  				   		message: 'Error al comprobar la noticia'
+  				   	});
+  		   		}//Si no existe el servicio
+  		   		if(!issetNews){
 
-			    	//Crear objetos a guardar
-			    	var news = new News();
-			    	//Asignar valores 
-			    	news.title = params.title;
-			    	news.content = params.content;
-			    	news.image = params.image;
-			    	news.user_id = req.user.sub;
-			    	news.remember_token = true;
-			    	//Guardar Service
-			    	news.save((err, newsStored) => {
-			    		if(err || !newsStored){
-			    			return res.status(404).send({
-					    		status:'error',
-					    		message:'La noticia no se ha guardado'
-				    	    });
-			    		}
-			    		//Devolver una respuesta
-				    	return res.status(200).send({
-				    		status:'success',
-				    		news: newsStored
-				    	});
-			    	});//Fin del Save
-			    }
-		   		else{//Fin validacion si existe el servivio que se quiere guardar
-		   			return res.status(500).send({
-				   		message: 'La noticia ya esta registrada'
-				   	});
-		   		}
-	   		});
-    	}else{
-    		return res.status(200).send({
-    			message:'Los datos no son validos'
-    		});
-    	}
+  			    	//Crear objetos a guardar
+  			    	var news = new News();
+  			    	//Asignar valores 
+  			    	news.title = params.title;
+  			    	news.content = params.content;
+  			    	news.image = params.image;
+  			    	news.user_id = req.user.sub;
+  			    	news.remember_token = true;
+  			    	//Guardar Service
+  			    	news.save((err, newsStored) => {
+  			    		if(err || !newsStored){
+  			    			return res.status(404).send({
+  					    		status:'error',
+  					    		message:'La noticia no se ha guardado'
+  				    	    });
+  			    		}
+  			    		//Devolver una respuesta
+  				    	return res.status(200).send({
+  				    		status:'success',
+  				    		news: newsStored
+  				    	});
+  			    	});//Fin del Save
+  			    }
+  		   		else{//Fin validacion si existe el servivio que se quiere guardar
+  		   			return res.status(500).send({
+  				   		message: 'La noticia ya esta registrada'
+  				   	});
+  		   		}
+  	   		});
+      	}else{
+      		return res.status(200).send({
+      			message:'Los datos no son validos'
+      		});
+      	}
     },
 
     //Api rest actualizar
@@ -159,18 +160,6 @@ var controller = {
 				});
    	   		});
    	   }else{
-   	   	   /*Recoger el Id del topic
-           var newsId = req.params.newsId;
-	   	   //Buscar y actualizar el documento de la bd
-	   	   News.findOneAndUpdate({_id: newsId, remember_token: true}, {image: file_name,updated_at: Date.now()}, {new: true}, (err, newsUpdated) => {
-	   	   		if(err || !newsUpdated){
-      	   	   	//Devolver una respuesta
-      			   	return res.status(500).send({
-      						status: 'error',
-      						message: 'Error al guardar la noticia'
-      					});
-	   	   		}
-          */
 	   	   		//Devolver respuesta
 	   	   		return res.status(200).send({
 						status: 'success',
@@ -197,28 +186,42 @@ var controller = {
 
    //Api rest Dar de baja a una noticia
    deleteNews: function(req, res){
-
-   	   //Recoger el id de la noticia
-   		var newsId = req.params.id;
-      	   //Buscar y actualizar el remember_token a false
-	   		News.findOneAndUpdate({_id: newsId, remember_token: true}, {remember_token: false, updated_at: Date.now()}, {new: true}, (err, newsUpdated) => {
-	   			if(err){
-	   				return res.status(200).send({
-	   					status: 'error',
-			   			message: 'Error al eliminar el registro de la noticia'
-			   		});
-	   			}
-	   			if(!newsUpdated){
-	   				return res.status(200).send({
-	   					status: 'error',
-			   			message: 'No existe el registro'
-			   		});
-	   			}
-	   			return res.status(200).send({
-	   				status: 'success',
-		   			message: 'Registro eliminado correctamente'
-		   		});
-	   		});
+      //Id usuario Administrador
+     var IdAdmin = req.params.idAdmin;
+         console.log(IdAdmin);
+         //Validar Que el usuario sea administrador
+         User.findOne({_id:IdAdmin, role: "ROLE_ADMIN", remember_token: true}).exec((err, user) => {
+               if(err || !user){
+                     //Devolver una respuesta
+                     return res.status(500).send({
+                        status: 'error',
+                        message: 'Acceso denegado'
+                  });
+               }
+               else{
+               	   //Recoger el id de la noticia
+               		var newsId = req.params.id;
+                  	   //Buscar y actualizar el remember_token a false
+            	   		News.findOneAndUpdate({_id: newsId, remember_token: true}, {remember_token: false, updated_at: Date.now()}, {new: true}, (err, newsUpdated) => {
+            	   			if(err){
+            	   				return res.status(200).send({
+            	   					status: 'error',
+            			   			message: 'Error al eliminar el registro de la noticia'
+            			   		});
+            	   			}
+            	   			if(!newsUpdated){
+            	   				return res.status(200).send({
+            	   					status: 'error',
+            			   			message: 'No existe el registro'
+            			   		});
+            	   			}
+            	   			return res.status(200).send({
+            	   				status: 'success',
+            		   			message: 'Registro eliminado correctamente'
+            		   		});
+            	   		});
+               }
+         });
    },
    //Api rest lista noticias
    getNews: function(req, res){

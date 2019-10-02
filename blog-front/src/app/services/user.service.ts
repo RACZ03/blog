@@ -22,7 +22,7 @@ export class UserService{
     }
     //metodo de usuarios
     //Registrar Usuario
-    register(user_to_register):Observable<any>{
+    register(idAdmin, user_to_register):Observable<any>{
         let params = JSON.stringify(user_to_register); 
         let headers = {
         headers: new HttpHeaders({
@@ -31,7 +31,7 @@ export class UserService{
         })};
         //console.log('parametros: ',params);
         //console.log(_options.get('Content-Type'));
-        return this._http.post(this.url+'user/register', params, headers);
+        return this._http.post(this.url+'user/register/'+idAdmin, params, headers);
         
         }
      //Login
@@ -84,21 +84,21 @@ export class UserService{
          return this._http.put(this.url+'user/update', params, {headers: headers});
      }
 
- getUsers():Observable<any>{
+ getUsers(idAdmin):Observable<any>{
     
     let headers = {
         headers: new HttpHeaders({
         'Authorization':  this.getToken()
         })};
-    return this._http.get(this.url+'users',headers);
+    return this._http.get(this.url+'users/'+idAdmin,headers);
 }
 
-deleteUser(token, id):Observable<any>{
+deleteUser(token,idAdmin, id):Observable<any>{
     let headers = {headers :  new HttpHeaders({
         'Content-Type': 'application/json',
          'Authorization': this.getToken()
     })};
-  return this._http.delete(this.url+'user/delete/'+id, headers);
+  return this._http.delete(this.url+'user/delete/'+idAdmin+'/'+id, headers);
 }
 
 }

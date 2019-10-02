@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
    public title : string;
    public users: User[];
    public token;
- 
+   public indentity;
 
   constructor(
     private _route : ActivatedRoute,
@@ -31,6 +31,7 @@ export class ListComponent implements OnInit {
   ){
     this.title='Usuarios';
     this.token = this._userService.getToken();
+    this.indentity = this._userService.getIdentity();
     }
 
     ngOnInit(){
@@ -38,7 +39,7 @@ export class ListComponent implements OnInit {
     }
     
     getUsers(){
-      this._userService.getUsers().subscribe(
+      this._userService.getUsers(this.indentity._id).subscribe(
             response =>{
                 if(response.status == 'success')
                 {
@@ -54,7 +55,7 @@ export class ListComponent implements OnInit {
 
   deleteUser(_id){
      //$('#myModal-'+_id).modal('hide');
-        this._userService.deleteUser(this.token, _id).subscribe(
+        this._userService.deleteUser(this.token, this.indentity._id, _id).subscribe(
             response =>{
                 if(response.status == 'success')
                 {

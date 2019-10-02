@@ -43,7 +43,7 @@ export class AddComponent implements OnInit {
     }
 
   onSubmit(form){
-    this._userService.register(this.user).subscribe(
+    this._userService.register(this.identity._id,this.user).subscribe(
     response => {
         if (response.status == "success") {
           this.status = response.status;
@@ -52,6 +52,7 @@ export class AddComponent implements OnInit {
         }
         else{
           this.status = 'error';
+          alert('Error del Servidor')
         }
      },
      error =>

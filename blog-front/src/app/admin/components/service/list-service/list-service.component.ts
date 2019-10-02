@@ -21,6 +21,7 @@ export class ListServiceComponent implements OnInit {
    public  services: Service[];
    public token;
    public url;
+   public identity;
 
   constructor(
     private _route : ActivatedRoute,
@@ -32,6 +33,7 @@ export class ListServiceComponent implements OnInit {
   ){
     this.title='Servicios';
     this.token = this._userService.getToken();
+    this.identity = this._userService.getIdentity();
     this.url = GLOBAL.url;
     }
 
@@ -56,7 +58,7 @@ export class ListServiceComponent implements OnInit {
 
   deleteService(_id){
      //$('#myModal-'+_id).modal('hide');
-        this._serviceService.deleteService(this.token, _id).subscribe(
+        this._serviceService.deleteService(this.token, this.identity._id, _id).subscribe(
             response =>{
                 if(response.status == 'success')
                 {

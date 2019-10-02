@@ -14,7 +14,7 @@ var md_upload = multipart({uploadDir: './uploads/services'});
 	router.get('/service/avatar/:fileName', ServiceController.avatar);
 	router.get('/services', ServiceController.getServices);
 	router.get('/service/:id', ServiceController.getService);
-	router.delete('/service/delete/:id', md_auth.authenticated, ServiceController.deleteService);
+	router.delete('/service/delete/:idAdmin/:id', md_auth.authenticated, ServiceController.deleteService);
 
 //exportar rutas
 module.exports = router;

@@ -58,12 +58,12 @@ export class NewsService{
             })};
         return this._http.get(this.url+'news/'+id, headers);
     }
-    deleteNews(token, id):Observable<any>{
+    deleteNews(token, idAdmin, id):Observable<any>{
         let headers = {headers :  new HttpHeaders({
             'Content-Type': 'application/json',
              'Authorization': token
         })};
-      return this._http.delete(this.url+'news/delete/'+id, headers);
+      return this._http.delete(this.url+'news/delete/'+idAdmin+'/'+id, headers);
     }
 
 }

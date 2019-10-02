@@ -21,6 +21,7 @@ export class ListNewsComponent implements OnInit {
    public  news: News[];
    public token;
    public url;
+   public identity;
 
   constructor(
     private _route : ActivatedRoute,
@@ -30,9 +31,10 @@ export class ListNewsComponent implements OnInit {
     
 
   ){
-    this.title='Noticias';
-    this.token = this._userService.getToken();
-    this.url = GLOBAL.url;
+      this.title='Noticias';
+      this.token = this._userService.getToken();
+      this.identity = this._userService.getIdentity();
+      this.url = GLOBAL.url;
     }
 
     ngOnInit(){
@@ -55,8 +57,7 @@ export class ListNewsComponent implements OnInit {
 
 
   deleteNew(_id){
-     //$('#myModal-'+_id).modal('hide');
-        this._newsService.deleteNews(this.token, _id).subscribe(
+        this._newsService.deleteNews(this.token, this.identity._id, _id).subscribe(
             response =>{
                 if(response.status == 'success')
                 {

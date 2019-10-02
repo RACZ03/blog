@@ -11,81 +11,95 @@ var jwt = require('../services/jwt');//Metodo para generar token
 var controller = {
 	//Api rest nuevo registro
    save: function(req, res){
-   		// Recoger los parametros de la peticion
-   		var params = req.body;
-   		// Validar los datos
-   		try{
-   			var validate_name = !validator.isEmpty(params.name);
-	   		var validate_surname = !validator.isEmpty(params.surname);
-	   		var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
-	   		var validate_password = !validator.isEmpty(params.password);
-	   		var validate_role = !validator.isEmpty(params.role);
-   		}catch(err)
-   		{
-   			return res.status(200).send({
-	   			message:'Faltan datos por enviar'
-	   		});
-   		}
-   		 		
-   		if(validate_name && validate_surname && validate_email && validate_password && validate_role){
-   			// Crear objetos de usuario
-   			var user = new User();
-	   		// Asignar valor al usuario
-	   		user.name = params.name;
-	   		user.surname = params.surname;
-	   		user.email = params.email.toLowerCase();
-	   		//Verificar el rol de usuario
-	   		if(params.role == "ROLE_ADMIN"){
-	   			user.role = params.role;	
-	   		}
-	   		else{
-	   			user.role = 'ROLE_USER';
-	   		}
-	   		user.image = null;
-	   		user.remember_token = true;
-	   		// Comprob ar si el usuario existe
-	   		User.findOne({email: user.email }, (err, issetUser) => {
-	   			if(err){
-	   				return res.status(500).send({
-			   			message: 'Error al comprobar el usuario'
-			   		});
-	   			}
-	   			if(!issetUser){
-	   				// Si no existe, cifrar la contraseña
-	   				bcrypt.hash(params.password, null, null, (err, hash) => {
-	   					user.password = hash;
+      var IdAdmin = req.params.idAdmin;
+         console.log(IdAdmin);
+         //Validar Que el usuario sea administrador
+         User.findOne({_id:IdAdmin, role: "ROLE_ADMIN", remember_token: true}).exec((err, user) => {
+               if(err || !user){
+                     //Devolver una respuesta
+                     return res.status(500).send({
+                        status: 'error',
+                        message: 'Acceso denegado'
+                  });
+               }
+               else{
+            		// Recoger los parametros de la peticion
+            		var params = req.body;
+            		// Validar los datos
+            		try{
+            			var validate_name = !validator.isEmpty(params.name);
+         	   		var validate_surname = !validator.isEmpty(params.surname);
+         	   		var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+         	   		var validate_password = !validator.isEmpty(params.password);
+         	   		var validate_role = !validator.isEmpty(params.role);
+            		}catch(err)
+            		{
+            			return res.status(200).send({
+         	   			message:'Faltan datos por enviar'
+         	   		});
+            		}
+            		 		
+            		if(validate_name && validate_surname && validate_email && validate_password && validate_role){
+            			// Crear objetos de usuario
+            			var user = new User();
+         	   		// Asignar valor al usuario
+         	   		user.name = params.name;
+         	   		user.surname = params.surname;
+         	   		user.email = params.email.toLowerCase();
+         	   		//Verificar el rol de usuario
+         	   		if(params.role == "ROLE_ADMIN"){
+         	   			user.role = params.role;	
+         	   		}
+         	   		else{
+         	   			user.role = 'ROLE_USER';
+         	   		}
+         	   		user.image = null;
+         	   		user.remember_token = true;
+         	   		// Comprob ar si el usuario existe
+         	   		User.findOne({email: user.email }, (err, issetUser) => {
+         	   			if(err){
+         	   				return res.status(500).send({
+         			   			message: 'Error al comprobar el usuario'
+         			   		});
+         	   			}
+         	   			if(!issetUser){
+         	   				// Si no existe, cifrar la contraseña
+         	   				bcrypt.hash(params.password, null, null, (err, hash) => {
+         	   					user.password = hash;
 
-	   					// Guardar usuarios
-	   					user.save((err, userStored) => {
-	   						if(err){
-				   				return res.status(500).send({
-						   			message: 'Error al guardar el usuario'
-						   		});
-	   			            }
-	   			            if(!userStored){
-	   			            	return res.status(500).send({
-						   			message: 'El usuario no se ha guardado'
-						   		});
-	   			            }
+         	   					// Guardar usuarios
+         	   					user.save((err, userStored) => {
+         	   						if(err){
+         				   				return res.status(500).send({
+         						   			message: 'Error al guardar el usuario'
+         						   		});
+         	   			            }
+         	   			            if(!userStored){
+         	   			            	return res.status(500).send({
+         						   			message: 'El usuario no se ha guardado'
+         						   		});
+         	   			            }
 
-	   			            return res.status(200).send({
-	   			            	status: 'success',
-	   			            	user: userStored});
-	   					});//Close save
-	   				});//Close bcrypt
-	   			}
-	   			else{
-	   				return res.status(500).send({
-			   			message: 'El usuario ya esta registrado'
-			   		});
-	   			}
-	   		});
-   		}
-   		else{
-   			return res.status(200).send({
-	   			message: 'Validación de los datos del usuario incorrecta, intentelo de nuevo'
-	   		});
-   		}   		
+         	   			            return res.status(200).send({
+         	   			            	status: 'success',
+         	   			            	user: userStored});
+         	   					});//Close save
+         	   				});//Close bcrypt
+         	   			}
+         	   			else{
+         	   				return res.status(500).send({
+         			   			message: 'El usuario ya esta registrado'
+         			   		});
+         	   			}
+         	   		});
+            		}
+            		else{
+            			return res.status(200).send({
+         	   			message: 'Validación de los datos del usuario incorrecta, intentelo de nuevo'
+         	   		});
+            		}
+               }
+         });   		
    },
 
    //Api rest login
@@ -292,22 +306,35 @@ var controller = {
    },
    //Listar usuarios
    getUsers: function(req, res){
-   		User.find({remember_token: true}).exec((err, users) => {
+      var IdAdmin = req.params.idAdmin;
+         //Validar Que el usuario sea administrador
+   		User.findOne({_id:IdAdmin, role: "ROLE_ADMIN", remember_token: true}).exec((err, user) => {
+               if(err || !user){
+                     //Devolver una respuesta
+                     return res.status(500).send({
+                        status: 'error',
+                        message: 'Acceso denegado'
+                  });
+               }
+               else{
+                   User.find({remember_token: true}).exec((err, users) => {
 
-   			if(err || !users){
-   				return res.status(404).send({
-   					status: 'error',
-   					message: 'No hay usuarios que mostrar'
-   				}); 
-   			}else{
-   				
-   				//Devolver respuesta
-   				return res.status(200).send({
-   					status: 'success',
-   					users: users
-   				});
-   			}
-   		});
+                        if(err || !users){
+                           return res.status(404).send({
+                              status: 'error',
+                              message: 'No hay usuarios que mostrar'
+                           }); 
+                        }else{
+                           
+                           //Devolver respuesta
+                           return res.status(200).send({
+                              status: 'success',
+                              users: users
+                           });
+                        }
+                     });
+               }
+         });
    },
 
    //Listar un usuario en especifico
@@ -337,28 +364,41 @@ var controller = {
 
    //Api rest Dar de baja a un usuario
    deleteUser: function(req, res){
-
-   	   //Recoger el id del usuario
-   		var userId = req.params.id;
-   	   //Buscar y actualizar el remember_token a false
-	   		User.findOneAndUpdate({_id: userId, remember_token: true}, {remember_token: false, updated_at: Date.now()}, {new: true}, (err, userUpdated) => {
-	   			if(err){
-	   				return res.status(200).send({
-	   					status: 'error',
-			   			message: 'Error al Eliminar el registro del usuario'
-			   		});
-	   			}
-	   			if(!userUpdated){
-	   				return res.status(200).send({
-	   					status: 'error',
-			   			message: 'No existe el registro'
-			   		});
-	   			}
-	   			return res.status(200).send({
-	   				status: 'success',
-		   			message: 'Registro eliminado correctamente'
-		   		});
-	   		});
+      //id del usuario administrador
+      var IdAdmin = req.params.idAdmin;
+         //Validar Que el usuario sea administrador
+         User.findOne({_id:IdAdmin, role: "ROLE_ADMIN", remember_token: true}).exec((err, user) => {
+               if(err || !user){
+                     //Devolver una respuesta
+                     return res.status(500).send({
+                        status: 'error',
+                        message: 'Acceso denegado'
+                  });
+               }
+               else{
+   	         //Recoger el id del usuario
+         		var userId = req.params.id;
+         	   //Buscar y actualizar el remember_token a false
+      	   		User.findOneAndUpdate({_id: userId, remember_token: true}, {remember_token: false, updated_at: Date.now()}, {new: true}, (err, userUpdated) => {
+      	   			if(err){
+      	   				return res.status(200).send({
+      	   					status: 'error',
+      			   			message: 'Error al Eliminar el registro del usuario'
+      			   		});
+      	   			}
+      	   			if(!userUpdated){
+      	   				return res.status(200).send({
+      	   					status: 'error',
+      			   			message: 'No existe el registro'
+      			   		});
+      	   			}
+      	   			return res.status(200).send({
+      	   				status: 'success',
+      		   			message: 'Registro eliminado correctamente'
+      		   		});
+      	   		});
+               }
+         });
    }
 
 };

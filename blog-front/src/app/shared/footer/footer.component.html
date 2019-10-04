@@ -1,0 +1,47 @@
+<div class="inner-footer" *ngIf="!identity">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 f-about">
+          <h3 class="widgetheading">NameWeb</h3>
+          <p>Que la web de tu negocio no sea un deseo, Nosotros te ayudamos a hacerlo realidad. También puedes consultar por nuestros otros servicios. Será un gusto atenderle.
+          </p>
+        </div>
+        
+        <div class="col-lg-6 f-contact">
+          <h3 class="widgetheading">¡Cotiza tu proyecto ya!</h3>
+          <a  [routerLink] = "['/contacto']">
+            <p><i class="fa fa-envelope"></i> example@gmail.com</p>
+          </a>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="last-div" *ngIf="!identity">
+    <div class="container">
+      <div class="row">
+        <div class="copyright">
+          &copy; name. Derechos Reservados
+          
+        </div>
+        </div>
+    </div>
+   
+      
+     
+    
+   
+    <div class="container">
+      <div class="row">
+        <ul class="social-network">
+          <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook fa-1x"></i></a></li>
+          <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter fa-1x"></i></a></li>
+          
+
+         
+        </ul>
+      </div>
+    </div>
+</div>

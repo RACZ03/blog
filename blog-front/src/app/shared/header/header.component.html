@@ -1,0 +1,71 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse.collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand"><span>NameWeb</span></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <div class="menu">
+          <ul class="nav nav-tabs" role="tablist" *ngIf="!identity">
+            <li role="presentation"><a [routerLink] = "['/home']">Inicio</a></li>
+            <li role="presentation"><a [routerLink] = "['/servicios']">Servicios</a></li>
+            <li role="presentation"><a  [routerLink] = "['/blog']">Blog</a></li>
+          
+            <li role="presentation"><a  [routerLink] = "['/contacto']">Contacto</a></li>
+          </ul>
+
+          <!--Estando logueado-->
+          <ul class="nav nav-tabs" role="tablist" *ngIf="identity">
+              <li role="presentation"><a [routerLink] = "['/home']">Inicio</a></li>
+              <li role="presentation"><a [routerLink] = "['/servicios']">Servicios</a></li>
+              <li role="presentation"><a  [routerLink] = "['/blog']">Blog</a></li>
+            
+              <li role="presentation"><a  [routerLink] = "['/contacto']">Contacto</a></li>
+
+
+            <li class="avatar">
+             <!-- <img src="{{url + 'get-image-file/'+ identity.image}}"/>-->
+          </li>
+           <li class="dropdown">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+               {{identity.name}}<span class="caret"></span>
+               </a>
+               
+               <ul class="dropdown-menu">
+                <li *ngIf="identity">
+                   <a [routerLink] = "['/admin-panel/listado-categorias']">
+                   <span class="glyphicon glyphicon-tasks"></span>
+                   Administración
+                    </a>
+                </li>
+
+               
+        
+                <li>
+                  <a [routerLink] = "['/admin-panel/mydata']">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    Mis datos
+                  </a>
+                </li>
+        
+                <li>
+                  <a  [routerLink] = "['/']" class="pointer"  (click)="logout()">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    Salir
+                  </a>
+                  </li>
+               </ul>
+        
+           </li>    
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+

@@ -22,6 +22,7 @@ export class ListCategoriesComponent implements OnInit {
    public categories: Category[];
    public token;
    public identity;
+   isAdmin:boolean;
 
   constructor(
     private _route : ActivatedRoute,
@@ -38,6 +39,7 @@ export class ListCategoriesComponent implements OnInit {
 
     ngOnInit(){
       this.getCategories();
+      this.isAdmin = this._userService.isAdmin;
     }
     
     getCategories(){

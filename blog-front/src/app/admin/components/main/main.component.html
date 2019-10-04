@@ -6,7 +6,7 @@
 <!-- Barra Lateral Admin-->
  <div class="sidebar-admin" data-example-id="sample-nav-stacked" >
     <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
-        <li role="presentation" [routerLinkActive] ="['active']">
+        <li role="presentation" [routerLinkActive] ="['active']" *ngIf="isAdmin" >
             <a [routerLink] ="['listado']">Usuarios</a>
         </li>
         <li role="presentation" [routerLinkActive] ="['active']">

@@ -19,6 +19,8 @@ export class AppComponent implements OnInit, DoCheck {
   
   public identity;
   public url:string;
+  
+
 
  
    constructor(
@@ -33,6 +35,7 @@ export class AppComponent implements OnInit, DoCheck {
 
      ngOnInit(){
      this.identity = this._userService.getIdentity();
+     
        
      }
      ngDoCheck(){

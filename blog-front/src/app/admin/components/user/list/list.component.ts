@@ -20,6 +20,8 @@ export class ListComponent implements OnInit {
    public users: User[];
    public token;
    public indentity;
+   isAdmin:boolean;
+   
 
   constructor(
     private _route : ActivatedRoute,
@@ -32,10 +34,13 @@ export class ListComponent implements OnInit {
     this.title='Usuarios';
     this.token = this._userService.getToken();
     this.indentity = this._userService.getIdentity();
+   
     }
 
     ngOnInit(){
       this.getUsers();
+      this.isAdmin = this._userService.isAdmin;
+      
     }
     
     getUsers(){

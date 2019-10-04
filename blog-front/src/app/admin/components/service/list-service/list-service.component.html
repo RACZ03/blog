@@ -24,9 +24,12 @@
             </td>
 
             <td>
-              <a [routerLink]="['../edit-service', service._id]" class="btn btn-warning mr-3">Editar</a>
+              <a [routerLink]="['../edit-service', service._id]" class="btn btn-warning mr-3">
+                <span class="glyphicon glyphicon-pencil"></span>
+                Editar
+              </a>
               
-               <a href="#myModal-{{service._id}}" role="button" data-toggle="modal" class= "btn btn-sm btn-danger" >
+               <a href="#myModal-{{service._id}}" role="button" data-toggle="modal" class= "btn btn-sm btn-danger" *ngIf="isAdmin">
                 <span class="glyphicon glyphicon-trash"></span>
                 Eliminar
                 </a>

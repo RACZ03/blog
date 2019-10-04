@@ -3,6 +3,7 @@ import{Routes, RouterModule} from '@angular/router';
 
 //Componentes
 import {MainComponent} from './components/main/main.component';
+import { ErrorComponent } from './components/error/error.component';
 import {ListComponent} from './components/user/list/list.component';
 import {AddComponent} from './components/user/add/add.component';
 import {UserEditComponent} from './components/user/user-edit/user-edit.component';
@@ -38,6 +39,7 @@ const adminRoutes: Routes = [
       { path: 'listado-servicios', component: ListServiceComponent },
       { path: 'crear-service', component: AddServiceComponent },
       { path: 'edit-service/:_id', component: EditServiceComponent },
+      { path: '**', component: ErrorComponent }
     ]
    }
     

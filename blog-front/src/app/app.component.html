@@ -39,11 +39,13 @@
                
                <ul class="dropdown-menu">
                 <li *ngIf="identity">
-                   <a [routerLink] = "['/admin-panel/listado']" >
+                   <a [routerLink] = "['/admin-panel/listado-categorias']">
                    <span class="glyphicon glyphicon-tasks"></span>
                    Administración
                     </a>
                 </li>
+
+               
         
                 <li>
                   <a [routerLink] = "['/admin-panel/mydata']">
@@ -53,7 +55,7 @@
                 </li>
         
                 <li>
-                  <a  class="pointer"  (click)="logout()">
+                  <a  [routerLink] = "['/']" class="pointer"  (click)="logout()">
                     <span class="glyphicon glyphicon-log-out"></span>
                     Salir
                   </a>

@@ -30,6 +30,7 @@ import { AdminGuard } from '../services/admin.guard';
 import { UserService } from '../services/user.service';
 import { AddNewsComponent } from './components/news/add-news/add-news.component';
 import { EditNewsComponent } from './components/news/edit-news/edit-news.component';
+import { ErrorComponent } from './components/error/error.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { EditNewsComponent } from './components/news/edit-news/edit-news.compone
         EditServiceComponent,
         AddNewsComponent,
         EditNewsComponent,
+        ErrorComponent,
     ],
     imports:[
         CommonModule,

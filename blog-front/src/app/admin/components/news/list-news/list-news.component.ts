@@ -22,6 +22,7 @@ export class ListNewsComponent implements OnInit {
    public token;
    public url;
    public identity;
+   isAdmin:boolean;
 
   constructor(
     private _route : ActivatedRoute,
@@ -39,6 +40,7 @@ export class ListNewsComponent implements OnInit {
 
     ngOnInit(){
       this.getNews();
+      this.isAdmin = this._userService.isAdmin;
     }
     
     getNews(){

@@ -67,7 +67,7 @@ export class EditNewsComponent implements OnInit {
                if(response.status == 'success'){
 
                  this.news = response.news;
-                 console.log(response.news);
+                 
                }else{
                  this._router.navigate(['/admin-panel/listado-noticias']);
                }
@@ -87,7 +87,7 @@ export class EditNewsComponent implements OnInit {
   onSubmit(form){
     this._newsService.updateNews(this.token, this.news).subscribe(
     response => {
-    	console.log(response);
+    	
         if (response.status == "success") {
           this.status = response.status;
           this._router.navigate(['/admin-panel/listado-noticias']);

@@ -22,6 +22,7 @@ export class ListServiceComponent implements OnInit {
    public token;
    public url;
    public identity;
+   isAdmin:boolean;
 
   constructor(
     private _route : ActivatedRoute,
@@ -39,6 +40,7 @@ export class ListServiceComponent implements OnInit {
 
     ngOnInit(){
       this.getServices();
+      this.isAdmin = this._userService.isAdmin;
     }
     
     getServices(){

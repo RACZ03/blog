@@ -11,6 +11,9 @@ export class UserService{
     public url: string;
     public identity;
     public token;
+    isAdmin:boolean;
+    
+    
 
     constructor(private _http: HttpClient){
         this.url=GLOBAL.url;
@@ -48,15 +51,21 @@ export class UserService{
 
     getIdentity(){
         let identity = JSON.parse(localStorage.getItem('identity'));
-        
-
-        if(identity != "undefined"){
-          this.identity =identity;
-        }else{
-            this.identity=null;
+        if(identity && identity != "undefined")
+        {
+           this.identity = identity;
+       
+           if(this.identity.role == "ROLE_ADMIN")
+           {
+                 this.isAdmin = true;
+           }
         }
+        else{
+            this.identity = null;
+        }
+
         return this.identity;
-    }
+   }
 
    
 

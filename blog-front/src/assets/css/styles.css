@@ -16,6 +16,44 @@ body {
 	background-color:#fff;
 }
 
+/* --- sidebar --- */
+*{
+  margin:0;
+  padding:0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+}
+.social{
+  position: fixed;
+  left:0;
+  top:200px;
+  z-index: 2000;
+
+}
+.social ul{
+ list-style: none;
+}
+.social ul li a{
+  display: inline-block;
+  color:#fff;
+  padding:12px 20px;
+  text-decoration: none;
+  -web-kit-transition:all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+.social ul li .icon-facebook{background:#3b5998 ;}
+.social ul li .icon-whatsapp{background:#25d366 ;}
+.social ul li .icon-mail2{background: #ea4335;}
+
+.social ul li a:hover{
+  padding:12px 40px;
+  
+
+} 
+
 h1,h2,h3,h4,h5,h6 {
 	color:#333;
 	line-height:1.1em;

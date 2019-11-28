@@ -1,0 +1,59 @@
+<div *ngIf="portafolio" >
+  
+<br>
+      
+
+    <p *ngIf="status == 'error'">
+        Error al registrar el portafolio
+    </p>
+     <div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">
+        El registro del portafolio se ha completado correctamente
+     </div>
+    <div class="container" class="col-lg-8">
+        <form #portafolioForm="ngForm" (ngSubmit)="onSubmit(portafolioForm)">
+            <fieldset>
+                <legend class="h4 text-center">
+                    Portafolio
+                </legend>
+                <p *ngIf="is_Edit">
+                     Editar portafolio
+                </p>
+                <div class="form-group">
+                    <label for="title">Titulo</label>
+                    <input type="text" name="title" class="form-control" #title="ngModel" [(ngModel)]="portafolio.title" required>
+                    <small *ngIf="!title.valid && title.touched" class="invalid-feedback d-block">
+                        El titulo no es valido
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripcion</label><br>
+                    <textarea rows="5" cols="50" name="description" #description="ngModel"
+                    [(ngModel)]="portafolio.description" required > </textarea>
+
+                     <small *ngIf="!description.valid && description.touched" class="invalid-feedback d-clock">
+                        La descripcion no existe
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="image">Imagen</label>
+                    <div *ngIf="portafolio.image">
+                        <img src="{{url + 'portafolio/avatar/' + portafolio.image}}" class="avatar_edit" />
+                    </div>
+                    <angular-file-uploader
+                       [config]="afuConfig"
+                       [resetUpload]=resetVar
+                       (ApiResponse)="imageUpload($event)">
+                    </angular-file-uploader>
+
+                </div>
+
+              
+            <div class="form-group text-center">
+                <input type="submit" value="Registrar"class="btn btn-success" [disabled]="portafolioForm.invalid"/>
+                <input type="submit" value="Cancelar" class="btn btn-warning mr-3" [routerLink] ="['../listado-portafolios']"/>
+            </div>
+            </fieldset>
+        </form>
+      </div>
+
+</div>

@@ -9,9 +9,11 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './shared/home/home.component';
 import { ServiciosComponent } from './shared/servicios/servicios.component';
 import { BlogComponent } from './shared/blog/blog.component';
-import { ContactoComponent } from './shared/contacto/contacto.component';
+
 import { LoginComponent } from './shared/login/login.component';
 import { AdminModule } from './admin/admin.module';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 
 @NgModule({
@@ -20,8 +22,10 @@ import { AdminModule } from './admin/admin.module';
     HomeComponent,
     ServiciosComponent,
     BlogComponent,
-    ContactoComponent,
+   
     LoginComponent,
+    HeaderComponent,
+    FooterComponent,
    
   ],
   imports: [

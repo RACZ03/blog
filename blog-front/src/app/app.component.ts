@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserService} from './services/user.service';
 import { Router,ActivatedRoute,Params } from '@angular/router';
 import{GLOBAL} from'./services/global';
@@ -12,43 +12,9 @@ import{GLOBAL} from'./services/global';
   providers:[UserService]
 })
 
-export class AppComponent implements OnInit, DoCheck {
+export class AppComponent {
 
- 
-  public title:string;
+
   
-  public identity;
-  public url:string;
-  
-
-
- 
-   constructor(
-    private _route: ActivatedRoute,
-    private _router: Router,
-    private _userService: UserService
-
-    ){
-     
-      this.url=GLOBAL.url;
-     }
-
-     ngOnInit(){
-     this.identity = this._userService.getIdentity();
-     
-       
-     }
-     ngDoCheck(){
-      this.identity = this._userService.getIdentity();
-     }
-
-     
- //Cerrar la sesion
-
-     logout(){
-      localStorage.clear();
-      this.identity=null;
-      this._router.navigate(['/']);
-     }
 }
 

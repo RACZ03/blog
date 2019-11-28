@@ -16,6 +16,44 @@ body {
 	background-color:#fff;
 }
 
+/* --- sidebar --- */
+*{
+  margin:0;
+  padding:0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+}
+.social{
+  position: fixed;
+  left:0;
+  top:200px;
+  z-index: 2000;
+
+}
+.social ul{
+ list-style: none;
+}
+.social ul li a{
+  display: inline-block;
+  color:#fff;
+  padding:12px 20px;
+  text-decoration: none;
+  -web-kit-transition:all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+.social ul li .icon-facebook{background:#3b5998 ;}
+.social ul li .icon-whatsapp{background:#25d366 ;}
+.social ul li .icon-mail2{background: #ea4335;}
+
+.social ul li a:hover{
+  padding:12px 40px;
+  
+
+} 
+
 h1,h2,h3,h4,h5,h6 {
 	color:#333;
 	line-height:1.1em;
@@ -66,7 +104,7 @@ a.navbar-brand span {
 .navbar-fixed-top {
   top: 0;
   border-width: 0 0 0;
-  background-color:#0db4be;
+  background-color:#006064;
 }
 .nav-tabs {
   border-bottom:0; 
@@ -86,20 +124,13 @@ a.navbar-brand span {
   color:#fff;
 }
 .nav-tabs > li > a:hover {
-	background-color: #36CBD4;
+	background-color: #00838F;
 }
-.nav-tabs > li.active > a {
-	color: #fff;
-  cursor: default;
-  background-color:#36CBD4;
-  border: 0;
-  border-bottom-color: transparent;
 
-}
 .nav-tabs > li.active > a:hover {
-	color: #fff;
+	color: #00838F;
 	border: 0;
-	background-color: #36CBD4;
+	background-color: #00838F;
 	cursor: pointer;
 }
 
@@ -107,15 +138,6 @@ a.navbar-brand span {
     margin-bottom: 0;
 }
 
-.slider {
-	margin-top:110px;
-	background-color:white;
-	
-}
-.bxslider li {
-	margin-left:40px;
-
-}
 
 .content {
 	margin-top:20px;
@@ -468,133 +490,57 @@ textarea#message{
 	display:block;
 }
 
+
+
 /*=========================
   Footer
  ================= */
-
-footer {
-  background: #fff;
-}
-
-.inner-footer  ul li,a  {
-	list-style:none;
-}
-.widgetheading {
-  font-size: 20px;
-  color: #000;
-  font-weight: 600;
-  margin-top: 40px;
-  margin-bottom: 40px; 
-}
-.f-about a h1 {
-	text-align:center;
-	margin-top: 40px;
-	margin-bottom: 40px;
-	color: #0db4be;	
-}
-.f-about a h1 span {
-	color: #0db4be;	
-}
-.f-about p {
-  font-size: 14px;
-  color: #8a8d94;
+.footer{
+  background:#006064;
  
 }
-.l-posts h3 {
-	margin-left:40px;
-}
-.l-posts li a {
-  font-size: 14px;
-  color: #8a8d94;
-  margin: 0;
-  font-weight: 300;
-  border-bottom: 1px solid #f6f6f6;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  display: block;
+
+h2,h4{
+    color:#fff
 }
 
-.l-posts li a:hover  {
-  color: #0db4be;
+.links ul {
+    list-style-type: none;
+   
 }
+   
+.links ul li a{
+    color:white;
+    
 
-.f-contact p {
-  font-size: 14px;
-  color: #8a8d94;
-  margin: 0;
+}
   
-  font-weight: 300;
-  margin-bottom: 15px;
+.about-company p{
+      color:white;
+      transition: color .2s;
+} 
+.location i{
+font-size:18px;
 }
 
-.f-contact i {
-  color: #56595f;
-  font-size: 16px;
-  margin-right: 10px;
+.location p{
+
+    color:white;
 }
 
-.f-contact a:hover p{
-  color: #0db4be;
+.copyright{
+  text-align: center;
+  background:#00838F;
+ 
+  
 }
-.last-div {
-	margin-top:40px;
-    background: #0db4be;
-    padding: 20px 0;
-    position: relative;
-}
-
-.copyright {
-    font-size: 14px;
-    color: #fff;
-    margin: 0;   
-    font-weight: 300;
-    float: left;
-}
-.copyright a{
-    color: #fff;
-}
-.copyright a:hover {
-    text-decoration: underline;
-    color: #36CBD4;
-}
-
-ul.social-network {
-	list-style:none;
-	margin-top:-20px;
-	float:right;
-	font-size:18px;	
-	margin-right:20px;
-}
-
-ul.social-network li {
-	display:inline;
-	margin: 0 15px;
-	color:#73f4fc;
-}
-ul.social-network li a {	
-	color:#73f4fc;	
-}
-ul.social-network li a:hover {	
-	color:#fff;	
-}
-
-a.scrollup{
+.copyright p{
+    border-top:1px solid rgba(255,255,255,.1);
     color:#fff;
-	height:55px;
-	width:55px;
-	font-size:22px;
-	line-height:50px;
-	text-align:center;
-	text-decoration:none;
-	position:fixed;
-	bottom:10px;
-	right:40px;	
-	opacity:0,5;
-	border-radius:50%;
-	z-index:999;
-}
-a.scrollup:hover{
-	opacity:1;
-	background-color:#36CBD4;
-	color:#fff;;	
-}
+    
+ }
+
+
+
+
+

@@ -12,10 +12,11 @@ body {
 	font-weight:300;
 	line-height:1.6em;
 	color:#333;
-	background-color:#fff;
+  background-color:#fff;
+
 }
 
-hi,h2,h3,h4,h5,h6 {
+h1,h2,h3,h4,h5,h6 {
 	color:#333;
 	line-height:1.1em;
 }

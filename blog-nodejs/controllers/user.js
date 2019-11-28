@@ -23,83 +23,83 @@ var controller = {
                   });
                }
                else{
-            		// Recoger los parametros de la peticion
-            		var params = req.body;
-            		// Validar los datos
-            		try{
-            			var validate_name = !validator.isEmpty(params.name);
-         	   		var validate_surname = !validator.isEmpty(params.surname);
-         	   		var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
-         	   		var validate_password = !validator.isEmpty(params.password);
-         	   		var validate_role = !validator.isEmpty(params.role);
-            		}catch(err)
-            		{
-            			return res.status(200).send({
-         	   			message:'Faltan datos por enviar'
-         	   		});
-            		}
-            		 		
-            		if(validate_name && validate_surname && validate_email && validate_password && validate_role){
-            			// Crear objetos de usuario
-            			var user = new User();
-         	   		// Asignar valor al usuario
-         	   		user.name = params.name;
-         	   		user.surname = params.surname;
-         	   		user.email = params.email.toLowerCase();
-         	   		//Verificar el rol de usuario
-         	   		if(params.role == "ROLE_ADMIN"){
-         	   			user.role = params.role;	
-         	   		}
-         	   		else{
-         	   			user.role = 'ROLE_USER';
-         	   		}
-         	   		user.image = null;
-         	   		user.remember_token = true;
-         	   		// Comprob ar si el usuario existe
-         	   		User.findOne({email: user.email }, (err, issetUser) => {
-         	   			if(err){
-         	   				return res.status(500).send({
-         			   			message: 'Error al comprobar el usuario'
-         			   		});
-         	   			}
-         	   			if(!issetUser){
-         	   				// Si no existe, cifrar la contraseña
-         	   				bcrypt.hash(params.password, null, null, (err, hash) => {
-         	   					user.password = hash;
+                  // Recoger los parametros de la peticion
+                  var params = req.body;
+                  // Validar los datos
+                  try{
+                     var validate_name = !validator.isEmpty(params.name);
+                     var validate_surname = !validator.isEmpty(params.surname);
+                     var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+                     var validate_password = !validator.isEmpty(params.password);
+                     var validate_role = !validator.isEmpty(params.role);
+                  }catch(err)
+                  {
+                     return res.status(200).send({
+                        message:'Faltan datos por enviar'
+                     });
+                  }
+                         
+                  if(validate_name && validate_surname && validate_email && validate_password && validate_role){
+                     // Crear objetos de usuario
+                     var user = new User();
+                     // Asignar valor al usuario
+                     user.name = params.name;
+                     user.surname = params.surname;
+                     user.email = params.email.toLowerCase();
+                     //Verificar el rol de usuario
+                     if(params.role == "ROLE_ADMIN"){
+                        user.role = params.role;   
+                     }
+                     else{
+                        user.role = 'ROLE_USER';
+                     }
+                     user.image = null;
+                     user.remember_token = true;
+                     // Comprob ar si el usuario existe
+                     User.findOne({email: user.email }, (err, issetUser) => {
+                        if(err){
+                           return res.status(500).send({
+                              message: 'Error al comprobar el usuario'
+                           });
+                        }
+                        if(!issetUser){
+                           // Si no existe, cifrar la contraseña
+                           bcrypt.hash(params.password, null, null, (err, hash) => {
+                              user.password = hash;
 
-         	   					// Guardar usuarios
-         	   					user.save((err, userStored) => {
-         	   						if(err){
-         				   				return res.status(500).send({
-         						   			message: 'Error al guardar el usuario'
-         						   		});
-         	   			            }
-         	   			            if(!userStored){
-         	   			            	return res.status(500).send({
-         						   			message: 'El usuario no se ha guardado'
-         						   		});
-         	   			            }
+                              // Guardar usuarios
+                              user.save((err, userStored) => {
+                                 if(err){
+                                    return res.status(500).send({
+                                       message: 'Error al guardar el usuario'
+                                    });
+                                    }
+                                    if(!userStored){
+                                       return res.status(500).send({
+                                       message: 'El usuario no se ha guardado'
+                                    });
+                                    }
 
-         	   			            return res.status(200).send({
-         	   			            	status: 'success',
-         	   			            	user: userStored});
-         	   					});//Close save
-         	   				});//Close bcrypt
-         	   			}
-         	   			else{
-         	   				return res.status(500).send({
-         			   			message: 'El usuario ya esta registrado'
-         			   		});
-         	   			}
-         	   		});
-            		}
-            		else{
-            			return res.status(200).send({
-         	   			message: 'Validación de los datos del usuario incorrecta, intentelo de nuevo'
-         	   		});
-            		}
+                                    return res.status(200).send({
+                                       status: 'success',
+                                       user: userStored});
+                              });//Close save
+                           });//Close bcrypt
+                        }
+                        else{
+                           return res.status(500).send({
+                              message: 'El usuario ya esta registrado'
+                           });
+                        }
+                     });
+                  }
+                  else{
+                     return res.status(200).send({
+                        message: 'Validación de los datos del usuario incorrecta, intentelo de nuevo'
+                     });
+                  }
                }
-         });   		
+         });         
    },
 
    //Api rest login

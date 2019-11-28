@@ -18,6 +18,10 @@ import{ EditServiceComponent } from './components/service/edit-service/edit-serv
 import {ListNewsComponent} from './components/news/list-news/list-news.component';
 import { AddNewsComponent } from './components/news/add-news/add-news.component';
 import { EditNewsComponent } from './components/news/edit-news/edit-news.component';
+
+import {ListPortafolioComponent} from './components/portafolio/list-portafolio/list-portafolio.component';
+import { AddPortafolioComponent } from './components/portafolio/add-portafolio/add-portafolio.component';
+import { EditPortafolioComponent } from './components/portafolio/edit-portafolio/edit-portafolio.component';
 import { AdminGuard } from '../services/admin.guard';
 
 //Congiguración de rutas
@@ -39,6 +43,9 @@ const adminRoutes: Routes = [
       { path: 'listado-servicios', component: ListServiceComponent },
       { path: 'crear-service', component: AddServiceComponent },
       { path: 'edit-service/:_id', component: EditServiceComponent },
+      { path: 'listado-portafolios', component: ListPortafolioComponent },
+      { path: 'crear-portafolio', component: AddPortafolioComponent },
+      { path: 'edit-portafolio/:_id', component: EditPortafolioComponent },
       { path: '**', component: ErrorComponent }
     ]
    }

@@ -24,12 +24,17 @@ import { EditServiceComponent } from './components/service/edit-service/edit-ser
 
 //Componente de noticias
 import { ListNewsComponent } from './components/news/list-news/list-news.component';
+import { AddNewsComponent } from './components/news/add-news/add-news.component';
+import { EditNewsComponent } from './components/news/edit-news/edit-news.component';
+
+//Componente de portafolio
+import { ListPortafolioComponent } from './components/portafolio/list-portafolio/list-portafolio.component';
+import { AddPortafolioComponent } from './components/portafolio/add-portafolio/add-portafolio.component';
+import { EditPortafolioComponent } from './components/portafolio/edit-portafolio/edit-portafolio.component';
 
 //servicios
 import { AdminGuard } from '../services/admin.guard';
 import { UserService } from '../services/user.service';
-import { AddNewsComponent } from './components/news/add-news/add-news.component';
-import { EditNewsComponent } from './components/news/edit-news/edit-news.component';
 import { ErrorComponent } from './components/error/error.component';
 
 
@@ -47,6 +52,9 @@ import { ErrorComponent } from './components/error/error.component';
         AddServiceComponent,
         EditServiceComponent,
         AddNewsComponent,
+        ListPortafolioComponent,
+        AddPortafolioComponent,
+        EditPortafolioComponent,
         EditNewsComponent,
         ErrorComponent,
     ],

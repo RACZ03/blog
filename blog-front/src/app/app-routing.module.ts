@@ -6,7 +6,7 @@ import{ ModuleWithProviders} from '@angular/core';
 import {HomeComponent} from './shared/home/home.component';
 import {ServiciosComponent} from './shared/servicios/servicios.component';
 import {BlogComponent} from './shared/blog/blog.component';
-import {ContactoComponent} from './shared/contacto/contacto.component';
+
 import {LoginComponent} from './shared/login/login.component';
 
 const routes: Routes = [
@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'servicios', component: ServiciosComponent },
   { path: 'blog', component: BlogComponent },
-  { path: 'contacto', component: ContactoComponent },
+  
   { path: 'login', component: LoginComponent },
 
   //Rutas hijas

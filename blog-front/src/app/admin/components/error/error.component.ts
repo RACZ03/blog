@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 export class ErrorComponent implements OnInit {
 	public page_title: string; 
   	constructor() { 
-  		   this.page_title = 'Pagina no encontrada';
+  		   
 
   	}
    

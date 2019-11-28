@@ -84,10 +84,8 @@ export class AddServiceComponent implements OnInit {
   }
 
   onSubmit(form){
-  	console.log(this.service);
     this._serviceService.register(this.token, this.service).subscribe(
     response => {
-    	console.log(response);
         if (response.status == "success") {
           this.status = response.status;
           this._router.navigate(['/admin-panel/listado-servicios']);
